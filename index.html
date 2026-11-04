@@ -22,16 +22,31 @@
   </style>
 </head>
 <body>
+  <body>
+  <h1>Global July Temperature</h1>
+
   <select id="scenario-select" disabled></select>
 
+  <!-- 图上显示当前年份和情景 -->
+  <h2 id="chart-title">Loading...</h2>
 
   <svg id="chart"></svg>
   <svg id="legend"></svg>
 
-  <label for="year-slider">years</label>
-  <input id="year-slider" type="range"
-         min="0" max="0" step="1" value="0" disabled>
-  <output id="year-label"></output>
+  <div>
+    <label for="year-slider">Year:</label>
+    <output id="year-label">—</output>
+
+    <input
+      id="year-slider"
+      type="range"
+      min="0"
+      max="0"
+      step="1"
+      value="0"
+      disabled
+    >
+  </div>
 
   <p id="status"></p>
   <div id="tooltip" hidden></div>
