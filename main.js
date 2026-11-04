@@ -112,7 +112,7 @@ function drawLegend(minTemp, maxTemp) {
     .attr("y", 15)
     .attr("font-size", 12)
     .attr("fill", "#526c5d")
-    .text("气温（°C）· 所有年份、情景共用色标");
+    .text("temperature(°C)");
 
 
   const steps = 240;
@@ -186,7 +186,7 @@ function drawYear() {
       tooltip
         .property("hidden", false)
         .text(
-          `${year} 年 7 月 | ` +
+          `$July {year} | ` +
           `${latText(d.lat)}, ${lonText(d.lon)} | ` +
           (
             Number.isFinite(temperature)
@@ -223,7 +223,7 @@ function drawYear() {
     });
 
   document.querySelector("#chart-title").textContent =
-    `${year} 年 7 月 · ${scenarioNames[scenario] ?? scenario}`;
+    `$July {year} · ${scenarioNames[scenario] ?? scenario}`;
 
   document.querySelector("#year-label").textContent = year;
   slider.setAttribute("aria-valuetext", `${year}年`);
@@ -374,25 +374,30 @@ async function loadData() {
         return y(bottom) - y(top);
       });
 
-    changeScenario();
+        changeScenario();
 
-    document.querySelector("#status").textContent =
-      `${latitudes.length} lats ` +
-      `${longitudes.length} longs；` +
-      `grey means missingness`;
+        const status = document.querySelector("#status");
+        if (status) {
+          status.textContent =
+            `${latitudes.length} lats ` +
+            `${longitudes.length} longs；` +
+            `grey means missingness`;
+        }
 
-    } catch (error) {
-      console.error("数据加载失败：", error);
+      } catch (error) {
+        console.error("DataError", error);
 
-      const title = document.querySelector("#chart-title");
-      if (title) {
-        title.textContent = "Invalid Data";
+        const title = document.querySelector("#chart-title");
+        if (title) {
+          title.textContent = "Invalid Data";
+        }
+
+        const status = document.querySelector("#status");
+        if (status) {
+          status.textContent = error.message;
+        }
       }
     }
-
-    document.querySelector("#status").textContent =
-      error.message;
-}
 
 
 scenarioSelect.addEventListener("change", changeScenario);
