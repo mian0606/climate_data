@@ -162,6 +162,10 @@ function changeScenario() {
 function drawYear() {
   const scenario = scenarioSelect.value;
   const year = years[Number(slider.value)];
+  document.querySelector("#chart-title").textContent =
+    `July ${year} — ${scenarioNames[scenario] ?? scenario}`;
+
+  document.querySelector("#year-label").textContent = year;
 
   const rows = groupedData.get(scenario).get(year);
 
@@ -186,12 +190,12 @@ function drawYear() {
       tooltip
         .property("hidden", false)
         .text(
-          `$July {year} | ` +
+          `July ${year} | ` +
           `${latText(d.lat)}, ${lonText(d.lon)} | ` +
           (
             Number.isFinite(temperature)
               ? `${temperature.toFixed(2)} °C`
-              : "缺测"
+              : "Missing"
           )
         );
     })
@@ -226,7 +230,7 @@ function drawYear() {
     `$July {year} · ${scenarioNames[scenario] ?? scenario}`;
 
   document.querySelector("#year-label").textContent = year;
-  slider.setAttribute("aria-valuetext", `${year}年`);
+  slider.setAttribute("aria-valuetext", `${year}`);
 }
 
 async function loadData() {
