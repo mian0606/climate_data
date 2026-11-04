@@ -369,13 +369,18 @@ async function loadData() {
     changeScenario();
 
     document.querySelector("#status").textContent =
-      `${latitudes.length} 个纬度 × ` +
-      `${longitudes.length} 个经度；` +
-      `灰色表示缺测。`;
+      `${latitudes.length} lats ` +
+      `${longitudes.length} longs；` +
+      `grey means missingness`;
 
-  } catch (error) {
-    document.querySelector("#chart-title").textContent =
-      "Invalid Data";
+    } catch (error) {
+      console.error("数据加载失败：", error);
+
+      const title = document.querySelector("#chart-title");
+      if (title) {
+        title.textContent = "Invalid Data";
+      }
+    }
 
     document.querySelector("#status").textContent =
       error.message;
