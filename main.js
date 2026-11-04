@@ -384,8 +384,8 @@ async function loadData() {
 
     document.querySelector("#status").textContent =
       error.message;
-  }
 }
+
 
 scenarioSelect.addEventListener("change", changeScenario);
 slider.addEventListener("input", drawYear);
