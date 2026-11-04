@@ -282,6 +282,14 @@ async function loadData() {
       };
     });
 
+    const valid = data.filter(d =>
+      Number.isFinite(d.temperature_c)
+    );
+
+    if (valid.length === 0) {
+      throw new Error("No Temp available");
+    }
+
 
     groupedData = d3.group(
       data,
