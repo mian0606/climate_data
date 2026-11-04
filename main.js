@@ -231,7 +231,14 @@ function drawYear() {
 
 async function loadData() {
   try {
-    const data = await d3.csv("./july_temperature.csv", row => {
+    const response = await fetch("./july_temperature.csv.gz");
+    if (!response.ok) throw new Error(`failed：${response.status}`);
+    const stream = response.body.pipeThrough(
+      new DecompressionStream("gzip")
+    );
+    const csvText = await new Response(stream).text();
+
+    const data = d3.csvParse(csvText, row => {
       const date = String(row.time).match(
         /^(\d{4,})-(\d{2})-\d{2}/
       );
