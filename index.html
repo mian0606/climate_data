@@ -1,54 +1,273 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <title>七月气温</title>
+<!doctype html>
+<html lang="en">
 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Different Futures | Team 404</title>
   <script src="https://d3js.org/d3.v7.min.js" defer></script>
   <script src="./main.js" defer></script>
-
+  <script src="./regional.js" defer></script>
   <style>
-    #chart { width: 100%; }
-    #legend { width: 500px; }
-    #year-slider { width: 60%; }
+    * {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    body {
+      margin: 0;
+      background: #f2f5f3;
+      color: #18352e;
+      font: 16px/1.5 system-ui, sans-serif;
+    }
+
+    main {
+      max-width: 1480px;
+      margin: auto;
+      padding: 24px 18px;
+    }
+
+    header {
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 4vw, 3.25rem);
+      line-height: 1.05;
+    }
+
+    h2,
+    h3 {
+      margin: 0 0 6px;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+    }
+
+    h3 {
+      font-size: 1rem;
+    }
+
+    p {
+      margin: 0 0 10px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+    }
+
+    section> :last-child {
+      margin-bottom: 0;
+    }
+
+    section {
+      margin-bottom: 16px;
+      padding: clamp(14px, 1.5vw, 22px);
+      background: white;
+      border: 1px solid #dbe5df;
+      border-radius: 18px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      margin: 10px 0;
+    }
+
+    .field {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      max-width: 100%;
+      font-size: .9rem;
+    }
+
+    .year-field {
+      flex: 1 1 240px;
+    }
+
+    select {
+      min-width: 0;
+      max-width: 100%;
+      padding: 5px 8px;
+      font: inherit;
+      color: inherit;
+      background: white;
+      border: 1px solid #899e94;
+      border-radius: 6px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      min-width: 90px;
+      max-width: 100%;
+      accent-color: #246953;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+    }
+
+    #legend {
+      width: min(100%, 420px);
+    }
+
+    #warming-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 16px;
+    }
+
+    .key-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .swatch {
+      width: 18px;
+      border-top: 3px solid;
+    }
+
+    .note {
+      font-size: .875rem;
+      color: #465d54;
+    }
 
     #tooltip {
       position: fixed;
-      background: white;
-      border: 1px solid gray;
+      z-index: 2;
+      max-width: calc(100vw - 16px);
       padding: 8px;
       pointer-events: none;
+      background: white;
+      border: 1px solid #899e94;
+      border-radius: 6px;
+    }
+
+    @media (min-width: 900px) {
+      main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+      }
+
+      header {
+        grid-column: 1 / -1;
+        margin-bottom: 0;
+      }
+
+      main>section {
+        min-width: 0;
+        margin-bottom: 0;
+      }
+    }
+    #map-pair h4 { margin: 0 0 4px; font-size: .9rem; }
+    #map-pair > div { min-width: 0; }
+    #map-pair.is-comparing {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    #map-pair.is-comparing svg .tick text { font-size: 19px; }
+
+    @media (max-width: 540px) {
+      #map-pair.is-comparing { grid-template-columns: 1fr; }
+    }
+
+    @media (min-width: 900px) {
+      main:has(#map-pair.is-comparing) {
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      }
     }
   </style>
 </head>
+
 <body>
-  <body>
-  <h1>Global July Temperature</h1>
+  <main>
+    <header>
+      <h1>Different Futures</h1>
+      <p>How does projected warming vary by region and emissions scenario?</p>
+    </header>
 
-  <select id="scenario-select" disabled></select>
+    <section aria-labelledby="map-heading">
+      <h2 id="map-heading">Global July temperature</h2>
+      <p class="note">Absolute July surface air temperature (°C)</p>
 
-  <!-- 图上显示当前年份和情景 -->
-  <h2 id="chart-title">Loading...</h2>
+      <div class="controls">
+        <div class="field">
+          <label for="scenario-select">Scenario</label>
+          <select id="scenario-select" disabled></select>
+        </div>
 
-  <svg id="chart"></svg>
-  <svg id="legend"></svg>
+        <div class="field year-field">
+          <label for="year-slider">Map year</label>
+          <output id="year-label" for="year-slider">—</output>
+          <input id="year-slider" type="range" min="0" max="0" step="1" value="0" disabled>
+        </div>
+      </div>
 
-  <div>
-    <label for="year-slider">Year:</label>
-    <output id="year-label">—</output>
+      <h3 id="chart-title">Loading map…</h3>
+      <div id="map-pair">
+        <div>
+          <h4 id="low-map-heading" hidden>SSP1-2.6</h4>
+          <svg id="chart" role="img" aria-label="World map of July surface air temperature"></svg>
+        </div>
+        <div id="high-map-panel" hidden>
+          <h4>SSP5-8.5</h4>
+        </div>
+      </div>
+      <svg id="legend" role="img" aria-label="Map temperature color scale"></svg>
+      <p id="status" class="note"></p>
+      <div id="tooltip" hidden></div>
+    </section>
 
-    <input
-      id="year-slider"
-      type="range"
-      min="0"
-      max="0"
-      step="1"
-      value="0"
-      disabled
-    >
-  </div>
+    <section aria-labelledby="warming-heading">
+      <h2 id="warming-heading">Regional warming</h2>
+      <p class="note">Annual temperature change relative to 1995–2014 (°C)</p>
 
-  <p id="status"></p>
-  <div id="tooltip" hidden></div>
+      <div class="controls">
+        <div class="field">
+          <label for="warming-view">View</label>
+          <select id="warming-view">
+            <option value="regions">Compare regions</option>
+            <option value="scenarios">Compare scenarios</option>
+          </select>
+        </div>
+
+
+        <div class="field" id="warming-region-field" hidden>
+          <label for="warming-region">Region</label>
+          <select id="warming-region">
+            <option>Western North America</option>
+            <option>Europe</option>
+            <option>East Asia</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="warming-scenario-note" class="note" aria-live="polite"></p>
+      <div id="warming-key" class="note"></div>
+      <svg id="warming-chart" role="img" aria-label="Annual warming projections by year"></svg>
+      <p id="warming-year" class="note" aria-live="polite"></p>
+      <p id="warming-hover" class="note">Hover for annual values. Click a year to move the map.</p>
+      <p class="note">
+        CMIP6 ACCESS-CM2. Regional means use grid-cell area weights based on latitude.
+        Annual means weight each month by its number of days. The outlined regions can include ocean cells.
+      </p>
+    </section>
+  </main>
 </body>
+
 </html>

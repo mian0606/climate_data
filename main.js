@@ -1,410 +1,422 @@
-const width = 1100;
-const height = 600;
+const mapWidth = 1100;
+const mapHeight = 600;
+const mapMargin = { top: 20, right: 25, bottom: 50, left: 60 };
 
-const margin = {
-  top: 20,
-  right: 25,
-  bottom: 50,
-  left: 60
-};
+const mapSvg = d3.select("#chart")
+  .attr("viewBox", `0 0 ${mapWidth} ${mapHeight}`);
 
-const svg = d3.select("#chart")
-  .attr("viewBox", `0 0 ${width} ${height}`);
+const mapTooltip = d3.select("#tooltip");
+const mapScenarioSelect = document.querySelector("#scenario-select");
+const mapSlider = document.querySelector("#year-slider");
+const mapYearLabel = document.querySelector("#year-label");
+const mapTitle = document.querySelector("#chart-title");
+const mapStatus = document.querySelector("#status");
 
-const tooltip = d3.select("#tooltip");
-const scenarioSelect = document.querySelector("#scenario-select");
-const slider = document.querySelector("#year-slider");
-
-const scenarioNames = {
+const mapScenarioNames = {
   historical: "Historical",
-  ssp126: "SSP126",
-  ssp585: "SSP585"
+  ssp126: "SSP1-2.6",
+  ssp585: "SSP5-8.5"
 };
 
-
-const x = d3.scaleLinear()
-  .domain([-180, 180])
-  .range([margin.left, width - margin.right]);
-
-
-const y = d3.scaleLinear()
-  .domain([-90, 90])
-  .range([height - margin.bottom, margin.top]);
+const missingColor = "#e7ebe5";
+const mapX = d3.scaleLinear([-180, 180], [mapMargin.left, mapWidth - mapMargin.right]);
+const mapY = d3.scaleLinear([-90, 90], [mapHeight - mapMargin.bottom, mapMargin.top]);
 
 function lonText(value) {
-  if (value === 0) return "0°";
-  return `${Math.abs(value)}°${value < 0 ? "W" : "E"}`;
+  return value === 0 ? "0°" : `${Math.abs(value)}°${value < 0 ? "W" : "E"}`;
 }
 
 function latText(value) {
-  if (value === 0) return "0°";
-  return `${Math.abs(value)}°${value < 0 ? "S" : "N"}`;
+  return value === 0 ? "0°" : `${Math.abs(value)}°${value < 0 ? "S" : "N"}`;
 }
 
+mapSvg.append("rect")
+  .attr("x", mapX(-180))
+  .attr("y", mapY(90))
+  .attr("width", mapX(180) - mapX(-180))
+  .attr("height", mapY(-90) - mapY(90))
+  .attr("fill", missingColor);
 
-svg.append("rect")
-  .attr("x", x(-180))
-  .attr("y", y(90))
-  .attr("width", x(180) - x(-180))
-  .attr("height", y(-90) - y(90))
-  .attr("fill", "#e7ebe5");
+const mapCellsLayer = mapSvg.append("g");
 
-const cellsLayer = svg.append("g");
-
-
-svg.append("g")
-  .attr("class", "axis")
-  .attr("transform", `translate(0, ${y(-90)})`)
+mapSvg.append("g")
+  .attr("transform", `translate(0,${mapY(-90)})`)
   .call(
-    d3.axisBottom(x)
+    d3.axisBottom(mapX)
       .tickValues([-180, -120, -60, 0, 60, 120, 180])
       .tickFormat(lonText)
   );
 
-
-svg.append("g")
-  .attr("class", "axis")
-  .attr("transform", `translate(${x(-180)}, 0)`)
+mapSvg.append("g")
+  .attr("transform", `translate(${mapX(-180)},0)`)
   .call(
-    d3.axisLeft(y)
+    d3.axisLeft(mapY)
       .tickValues([-90, -60, -30, 0, 30, 60, 90])
       .tickFormat(latText)
   );
 
-let groupedData;
-let years = [];
-let color;
-let cells;
+const mapRegionsLayer = mapSvg.append("g").attr("pointer-events", "none");
 
+let mapData;
+let mapYears = [];
+let mapColor;
+let mapCells;
+let mapTemperatures;
 
-function getEdges(values, minimum, maximum) {
-  const edges = new Map();
-
-  values.forEach((value, i) => {
-    const previous = values[i - 1];
-    const next = values[i + 1];
-
-    const left = i > 0
-      ? (previous + value) / 2
-      : value - (next === undefined ? 1 : next - value) / 2;
-
-    const right = i < values.length - 1
-      ? (value + next) / 2
-      : value + (previous === undefined ? 1 : value - previous) / 2;
-
-    edges.set(value, [
-      Math.max(minimum, left),
-      Math.min(maximum, right)
-    ]);
-  });
-
-  return edges;
+function getSelectedMapYear() {
+  return mapYears[Number(mapSlider.value)];
 }
 
-function drawLegend(minTemp, maxTemp) {
-  const legend = d3.select("#legend")
-    .attr("viewBox", "0 0 520 75");
+function selectMapYear(year) {
+  const index = mapYears.indexOf(year);
+  if (index < 0) return false;
+
+  mapSlider.value = String(index);
+  drawMapYear();
+  return true;
+}
+
+function drawMapRegions(regions) {
+  mapRegionsLayer.selectAll("rect")
+    .data(regions, region => region.name)
+    .join("rect")
+    .attr("x", region => mapX(region.bounds[2]))
+    .attr("y", region => mapY(region.bounds[1]))
+    .attr("width", region => mapX(region.bounds[3]) - mapX(region.bounds[2]))
+    .attr("height", region => mapY(region.bounds[0]) - mapY(region.bounds[1]))
+    .attr("fill", "none")
+    .attr("stroke", "#18352e")
+    .attr("stroke-width", 1.5)
+    .attr("stroke-dasharray", "5 3")
+    .attr("vector-effect", "non-scaling-stroke");
+}
+
+function getEdges(values, minimum, maximum) {
+  return new Map(values.map((value, index) => {
+    const previous = values[index - 1];
+    const next = values[index + 1];
+    const lowerGap = value - (previous ?? value - ((next ?? value + 1) - value));
+    const upperGap = (next ?? value + lowerGap) - value;
+
+    return [value, [
+      Math.max(minimum, value - lowerGap / 2),
+      Math.min(maximum, value + upperGap / 2)
+    ]];
+  }));
+}
+
+function drawMapLegend(minTemp, maxTemp) {
+  const legend = d3.select("#legend").attr("viewBox", "0 0 520 60");
+  const steps = 240;
+  const legendWidth = 480;
+  const legendScale = d3.scaleLinear([minTemp, maxTemp], [20, 500]);
 
   legend.selectAll("*").remove();
 
   legend.append("text")
     .attr("x", 20)
-    .attr("y", 15)
-    .attr("font-size", 12)
-    .attr("fill", "#526c5d")
-    .text("temperature(°C)");
-
-
-  const steps = 240;
-  const legendWidth = 480;
+    .attr("y", 13)
+    .attr("font-size", 13)
+    .attr("fill", "#465d54")
+    .text("July temperature (°C)");
 
   legend.selectAll("rect")
     .data(d3.range(steps))
     .join("rect")
-    .attr("x", d => 20 + d * legendWidth / steps)
-    .attr("y", 27)
+    .attr("x", step => 20 + step * legendWidth / steps)
+    .attr("y", 20)
     .attr("width", legendWidth / steps + 0.1)
     .attr("height", 12)
-    .attr("fill", d => {
-      const temperature =
-        minTemp + d / (steps - 1) * (maxTemp - minTemp);
-
-      return color(temperature);
-    });
-
-  const legendScale = d3.scaleLinear()
-    .domain([minTemp, maxTemp])
-    .range([20, 500]);
+    .attr("fill", step => mapColor(
+      minTemp + step / (steps - 1) * (maxTemp - minTemp)
+    ));
 
   legend.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0, 41)")
-    .call(
-      d3.axisBottom(legendScale)
-        .ticks(6)
-        .tickSize(3)
-    );
+    .attr("transform", "translate(0,33)")
+    .call(d3.axisBottom(legendScale).ticks(6).tickSize(3));
 }
 
-function changeScenario() {
-  const scenario = scenarioSelect.value;
-
-  years = Array.from(groupedData.get(scenario).keys())
+function changeMapScenario() {
+  const previousYear = getSelectedMapYear();
+  const scenario = mapScenarioSelect.value;
+  const comparisonYears = isComparingMaps()
+    ? mapData.get("ssp585")
+    : null;
+  mapYears = Array.from(mapData.get(scenario).keys())
+    .filter(year => !comparisonYears || comparisonYears.has(year))
     .sort((a, b) => a - b);
 
-  slider.max = years.length - 1;
-  slider.value = 0;
-  slider.disabled = years.length < 2;
+  mapSlider.max = mapYears.length - 1;
+  mapSlider.value = String(Math.max(0, mapYears.indexOf(previousYear)));
+  mapSlider.disabled = mapYears.length < 2;
 
-  drawYear();
+  drawMapYear();
+  document.dispatchEvent(new Event("map-scenario-change"));
 }
 
-function drawYear() {
-  const scenario = scenarioSelect.value;
-  const year = years[Number(slider.value)];
-  document.querySelector("#chart-title").textContent =
-    `July ${year} — ${scenarioNames[scenario] ?? scenario}`;
+function drawMapYear() {
+  const scenario = mapScenarioSelect.value;
+  const year = getSelectedMapYear();
+  const rows = mapData.get(scenario).get(year);
 
-  document.querySelector("#year-label").textContent = year;
+  mapTitle.textContent = isComparingMaps() ? `July ${year}` : `July ${year} — ${mapScenarioNames[scenario] ?? scenario}`;
+  mapYearLabel.textContent = year;
+  mapSlider.setAttribute("aria-valuetext", String(year));
+  mapTooltip.property("hidden", true);
 
-  const rows = groupedData.get(scenario).get(year);
-
-  const temperatures = d3.rollup(
+  mapTemperatures = d3.rollup(
     rows,
-    values => d3.mean(values, d => d.temperature_c),
-    d => `${d.lat},${d.lon}`
+    values => d3.mean(values, row => row.temperature_c),
+    row => `${row.lat},${row.lon}`
   );
 
-  cells.attr("fill", d => {
-    const temperature = temperatures.get(`${d.lat},${d.lon}`);
-
-    return Number.isFinite(temperature)
-      ? color(temperature)
-      : "#e7ebe5";
+  mapCells.attr("fill", cell => {
+    const temperature = mapTemperatures.get(cell.key);
+    return Number.isFinite(temperature) ? mapColor(temperature) : missingColor;
   });
 
-  cells
-    .on("pointerenter", (event, d) => {
-      const temperature = temperatures.get(`${d.lat},${d.lon}`);
-
-      tooltip
-        .property("hidden", false)
-        .text(
-          `July ${year} | ` +
-          `${latText(d.lat)}, ${lonText(d.lon)} | ` +
-          (
-            Number.isFinite(temperature)
-              ? `${temperature.toFixed(2)} °C`
-              : "Missing"
-          )
-        );
-    })
-    .on("pointermove", event => {
-      const node = tooltip.node();
-
-      const left = Math.max(
-        8,
-        Math.min(
-          event.clientX + 12,
-          window.innerWidth - node.offsetWidth - 8
-        )
-      );
-
-      const top = Math.max(
-        8,
-        Math.min(
-          event.clientY + 12,
-          window.innerHeight - node.offsetHeight - 8
-        )
-      );
-
-      tooltip
-        .style("left", `${left}px`)
-        .style("top", `${top}px`);
-    })
-    .on("pointerleave", () => {
-      tooltip.property("hidden", true);
-    });
-
-  document.querySelector("#chart-title").textContent =
-    `$July {year} · ${scenarioNames[scenario] ?? scenario}`;
-
-  document.querySelector("#year-label").textContent = year;
-  slider.setAttribute("aria-valuetext", `${year}`);
+  drawSecondMap(year);
+  document.dispatchEvent(new Event("map-year-change"));
 }
 
-async function loadData() {
+function positionMapTooltip(event) {
+  const node = mapTooltip.node();
+  const left = Math.max(8, Math.min(event.clientX + 12, window.innerWidth - node.offsetWidth - 8));
+  const top = Math.max(8, Math.min(event.clientY + 12, window.innerHeight - node.offsetHeight - 8));
+
+  mapTooltip.style("left", `${left}px`).style("top", `${top}px`);
+}
+
+function parseMapRow(row) {
+  const date = String(row.time).match(/^(\d{4,})-(\d{2})-\d{2}/);
+  if (!date || Number(date[2]) !== 7) return null;
+
+  const rawLat = String(row.lat ?? "").trim();
+  const rawLon = String(row.lon ?? "").trim();
+  const lat = Number(rawLat);
+  const longitude = Number(rawLon);
+
+  if (
+    !rawLat || !rawLon ||
+    !Number.isFinite(lat) || !Number.isFinite(longitude) ||
+    lat < -90 || lat > 90 || longitude < -180 || longitude > 360
+  ) {
+    return null;
+  }
+
+  const lon = ((longitude + 180) % 360 + 360) % 360 - 180;
+  const rawTemperature = String(row.temperature_c ?? "").trim();
+  const temperature = rawTemperature ? Number(rawTemperature) : NaN;
+
+  return {
+    year: Number(date[1]),
+    lat,
+    lon: Number(lon.toFixed(8)),
+    temperature_c: Number.isFinite(temperature) ? temperature : NaN,
+    scenario: String(row.scenario ?? "").trim()
+  };
+}
+
+async function loadMap() {
   try {
-    const response = await fetch("./july_temperature.csv.gz");
-    if (!response.ok) throw new Error(`failed：${response.status}`);
-    const stream = response.body.pipeThrough(
-      new DecompressionStream("gzip")
-    );
+    const response = await fetch("./july_temperature_2100.csv.gz");
+    if (!response.ok) throw new Error(`Temperature data request failed (${response.status}).`);
+
+    const stream = response.body.pipeThrough(new DecompressionStream("gzip"));
     const csvText = await new Response(stream).text();
+    const rows = d3.csvParse(csvText, parseMapRow);
 
-    const data = d3.csvParse(csvText, row => {
-      const date = String(row.time).match(
-        /^(\d{4,})-(\d{2})-\d{2}/
-      );
+    const [lowest, highest] = d3.extent(rows, row => (
+      Number.isFinite(row.temperature_c) ? row.temperature_c : undefined
+    ));
+    if (lowest === undefined) throw new Error("No valid July temperatures found.");
 
-
-      if (!date || Number(date[2]) !== 7) return null;
-
-      const lat = Number(row.lat);
-      const rawLon = Number(row.lon);
-
-      if (
-        !String(row.lat ?? "").trim() ||
-        !String(row.lon ?? "").trim() ||
-        !Number.isFinite(lat) ||
-        !Number.isFinite(rawLon) ||
-        lat < -90 || lat > 90 ||
-        rawLon < -180 || rawLon > 360
-      ) {
-        return null;
-      }
-
-
-      const lon = ((rawLon + 180) % 360 + 360) % 360 - 180;
-
-      const rawTemperature = String(
-        row.temperature_c ?? ""
-      ).trim();
-
-      const temperature = rawTemperature === ""
-        ? NaN
-        : Number(rawTemperature);
-
-      return {
-        year: Number(date[1]),
-        lat,
-        lon: Number(lon.toFixed(8)),
-        temperature_c: Number.isFinite(temperature)
-          ? temperature
-          : NaN,
-        scenario: String(row.scenario ?? "").trim()
-      };
-    });
-
-    const valid = data.filter(d =>
-      Number.isFinite(d.temperature_c)
-    );
-
-    if (valid.length === 0) {
-      throw new Error("No Temp available");
-    }
-
-
-    groupedData = d3.group(
-      data,
-      d => d.scenario,
-      d => d.year
-    );
-
-    const scenarios = Array.from(groupedData.keys()).sort();
-
-    d3.select("#scenario-select")
-      .selectAll("option")
-      .data(scenarios)
-      .join("option")
-      .attr("value", d => d)
-      .text(d => scenarioNames[d] ?? d);
-
-    scenarioSelect.disabled = false;
-    scenarioSelect.value = scenarios[0];
-
-
-    let minTemp = Math.floor(
-      d3.min(valid, d => d.temperature_c) / 5
-    ) * 5;
-
-    let maxTemp = Math.ceil(
-      d3.max(valid, d => d.temperature_c) / 5
-    ) * 5;
+    let minTemp = Math.floor(lowest / 5) * 5;
+    let maxTemp = Math.ceil(highest / 5) * 5;
 
     if (minTemp === maxTemp) {
       minTemp -= 5;
       maxTemp += 5;
     }
 
-    color = d3.scaleLinear()
-      .domain([
-        minTemp,
-        minTemp + (maxTemp - minTemp) / 3,
-        minTemp + 2 * (maxTemp - minTemp) / 3,
-        maxTemp
-      ])
-      .range([
-        "#4cc9c0", // 青
-        "#ffe680", // 黄
-        "#f99b48", // 橙
-        "#c83f3f"  // 红
-      ])
+    const intermediateStops = [
+      [-40, "#4b8fc1"],
+      [0, "#e1eff4"],
+      [15, "#f9dc79"],
+      [30, "#e8773d"]
+    ];
+
+    const temperatureStops = [
+      [minTemp, "#253494"],
+      ...intermediateStops.filter(([temperature]) => temperature > minTemp && temperature < maxTemp),
+      [maxTemp, "#a50026"]
+    ];
+
+    mapColor = d3.scaleLinear()
+      .domain(temperatureStops.map(([temperature]) => temperature))
+      .range(temperatureStops.map(([, fill]) => fill))
+      .interpolate(d3.interpolateLab)
       .clamp(true);
 
-    drawLegend(minTemp, maxTemp);
+    drawMapLegend(minTemp, maxTemp);
 
-    const latitudes = Array.from(
-      new Set(data.map(d => d.lat))
-    ).sort((a, b) => a - b);
-
-    const longitudes = Array.from(
-      new Set(data.map(d => d.lon))
-    ).sort((a, b) => a - b);
-
+    const latitudes = Array.from(new Set(rows.map(row => row.lat))).sort((a, b) => a - b);
+    const longitudes = Array.from(new Set(rows.map(row => row.lon))).sort((a, b) => a - b);
     const latEdges = getEdges(latitudes, -90, 90);
     const lonEdges = getEdges(longitudes, -180, 180);
-
-
     const grid = [];
 
     for (const lat of latitudes) {
       for (const lon of longitudes) {
-        grid.push({ lat, lon });
+        grid.push({ lat, lon, key: `${lat},${lon}` });
       }
     }
 
-    cells = cellsLayer.selectAll("rect")
-      .data(grid, d => `${d.lat},${d.lon}`)
+    mapCells = mapCellsLayer.selectAll("rect")
+      .data(grid, cell => cell.key)
       .join("rect")
-      .attr("x", d => x(lonEdges.get(d.lon)[0]))
-      .attr("y", d => y(latEdges.get(d.lat)[1]))
-      .attr("width", d => {
-        const [left, right] = lonEdges.get(d.lon);
-        return x(right) - x(left);
+      .attr("x", cell => mapX(lonEdges.get(cell.lon)[0]))
+      .attr("y", cell => mapY(latEdges.get(cell.lat)[1]))
+      .attr("width", cell => {
+        const [left, right] = lonEdges.get(cell.lon);
+        return mapX(right) - mapX(left);
       })
-      .attr("height", d => {
-        const [bottom, top] = latEdges.get(d.lat);
-        return y(bottom) - y(top);
-      });
+      .attr("height", cell => {
+        const [bottom, top] = latEdges.get(cell.lat);
+        return mapY(bottom) - mapY(top);
+      })
+      .on("pointerenter", (event, cell) => {
+        const temperature = mapTemperatures.get(cell.key);
+        const value = Number.isFinite(temperature) ? `${temperature.toFixed(2)} °C` : "Missing";
 
-        changeScenario();
+        mapTooltip
+          .text(`July ${getSelectedMapYear()} · ${latText(cell.lat)}, ${lonText(cell.lon)} · ${value}`)
+          .property("hidden", false);
 
-        const status = document.querySelector("#status");
-        if (status) {
-          status.textContent =
-            `${latitudes.length} lats ` +
-            `${longitudes.length} longs；` +
-            `grey means missingness`;
-        }
+        positionMapTooltip(event);
+      })
+      .on("pointermove", positionMapTooltip)
+      .on("pointerleave", () => mapTooltip.property("hidden", true));
 
-      } catch (error) {
-        console.error("DataError", error);
+    mapData = d3.group(rows, row => row.scenario, row => row.year);
+    const scenarios = Array.from(mapData.keys()).sort();
 
-        const title = document.querySelector("#chart-title");
-        if (title) {
-          title.textContent = "Invalid Data";
-        }
+    d3.select(mapScenarioSelect)
+      .selectAll("option")
+      .data(scenarios)
+      .join("option")
+      .attr("value", scenario => scenario)
+      .text(scenario => mapScenarioNames[scenario] ?? scenario);
 
-        const status = document.querySelector("#status");
-        if (status) {
-          status.textContent = error.message;
-        }
-      }
-    }
+    mapScenarioSelect.value = scenarios.includes("ssp585") ? "ssp585" : scenarios[0];
+    mapScenarioSelect.disabled = false;
 
+    syncMapMode();
+    mapStatus.textContent = `${latitudes.length} × ${longitudes.length} grid cells · Gray indicates missing data.`;
+  } catch (error) {
+    console.error(error);
+    mapTitle.textContent = "Could not load the map";
+    mapStatus.textContent = error.message;
+  }
+}
 
-scenarioSelect.addEventListener("change", changeScenario);
-slider.addEventListener("input", drawYear);
+mapScenarioSelect.addEventListener("change", changeMapScenario);
+mapSlider.addEventListener("input", drawMapYear);
 
-loadData();
+const mapModeSelect = document.querySelector("#warming-view");
+const mapPair = document.querySelector("#map-pair");
+const lowMapHeading = document.querySelector("#low-map-heading");
+const highMapPanel = document.querySelector("#high-map-panel");
+const mapScenarioField = mapScenarioSelect.closest(".field");
+
+let previousSingleScenario;
+let secondMapCells;
+let secondMapRegions;
+let secondMapTemperatures;
+
+function isComparingMaps() {
+  return mapModeSelect.value === "scenarios" &&
+    mapData?.has("ssp126") && mapData?.has("ssp585");
+}
+
+function syncMapMode() {
+  if (!mapData) return;
+
+  const compare = isComparingMaps();
+  mapPair.classList.toggle("is-comparing", compare);
+  mapScenarioField.hidden = compare;
+  lowMapHeading.hidden = !compare;
+  highMapPanel.hidden = !compare;
+
+  if (compare) {
+    previousSingleScenario = mapScenarioSelect.value;
+    mapScenarioSelect.value = "ssp126";
+  } else if (previousSingleScenario !== undefined) {
+    mapScenarioSelect.value = previousSingleScenario;
+    previousSingleScenario = undefined;
+  }
+
+  mapSvg.attr("aria-label", compare
+    ? "July surface air temperature under SSP1-2.6"
+    : "World map of July surface air temperature");
+
+  changeMapScenario();
+}
+
+function createSecondMap() {
+  const original = mapSvg.node();
+  const clone = original.cloneNode(true);
+  clone.removeAttribute("id");
+  clone.setAttribute("aria-label", "July surface air temperature under SSP5-8.5");
+  highMapPanel.append(clone);
+
+  const cellLayerIndex = Array.from(original.children).indexOf(mapCellsLayer.node());
+  const regionLayerIndex = Array.from(original.children).indexOf(mapRegionsLayer.node());
+  secondMapRegions = clone.children[regionLayerIndex];
+  secondMapCells = d3.select(clone.children[cellLayerIndex])
+    .selectAll("rect")
+    .data(mapCells.data());
+
+  secondMapCells
+    .on("pointerenter", (event, cell) => {
+      const temperature = secondMapTemperatures.get(cell.key);
+      const value = Number.isFinite(temperature) ? `${temperature.toFixed(2)} °C` : "Missing";
+
+      mapTooltip
+        .text(`SSP5-8.5 · July ${getSelectedMapYear()} · ${latText(cell.lat)}, ${lonText(cell.lon)} · ${value}`)
+        .property("hidden", false);
+
+      positionMapTooltip(event);
+    })
+    .on("pointermove", positionMapTooltip)
+    .on("pointerleave", () => mapTooltip.property("hidden", true));
+}
+
+function syncSecondMapRegions() {
+  if (!secondMapRegions) return;
+
+  const outlines = Array.from(mapRegionsLayer.node().children, outline => outline.cloneNode(true));
+  secondMapRegions.replaceChildren(...outlines);
+}
+
+function drawSecondMap(year) {
+  if (!isComparingMaps()) return;
+  if (!secondMapCells) createSecondMap();
+
+  const rows = mapData.get("ssp585").get(year);
+  secondMapTemperatures = d3.rollup(
+    rows,
+    values => d3.mean(values, row => row.temperature_c),
+    row => `${row.lat},${row.lon}`
+  );
+
+  secondMapCells.attr("fill", cell => {
+    const temperature = secondMapTemperatures.get(cell.key);
+    return Number.isFinite(temperature) ? mapColor(temperature) : missingColor;
+  });
+
+  syncSecondMapRegions();
+}
+
+mapModeSelect.addEventListener("change", syncMapMode);
+loadMap();
