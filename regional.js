@@ -11,7 +11,7 @@
     ];
 
     const view = document.querySelector("#warming-view");
-  const scenarioNote = document.querySelector("#warming-scenario-note");
+    const scenarioNote = document.querySelector("#warming-scenario-note");
     const regionSelect = document.querySelector("#warming-region");
     const regionField = document.querySelector("#warming-region-field");
     const yearNote = document.querySelector("#warming-year");
@@ -44,44 +44,60 @@
         return;
     }
 
-  const projectionRows = rows.filter(row => row.scenario !== "historical");
+    const projectionRows = rows.filter(row => row.scenario !== "historical");
     const yDomain = [
         Math.min(0, d3.min(projectionRows, row => row.warming)),
         d3.max(projectionRows, row => row.warming)
     ];
     const formatValue = d3.format("+.2f");
 
+    const warmingTooltip = d3.select("body").append("div")
+        .attr("aria-hidden", "true")
+        .property("hidden", true)
+        .style("position", "fixed")
+        .style("z-index", "3")
+        .style("pointer-events", "none")
+        .style("max-width", "calc(100vw - 16px)")
+        .style("padding", "8px 12px")
+        .style("background", "#18352e")
+        .style("color", "white")
+        .style("border-radius", "8px")
+        .style("font-size", "0.875rem")
+        .style("white-space", "pre-line")
+        .style("box-shadow", "0 4px 14px #0002");
+
     function draw() {
+        warmingTooltip.property("hidden", true);
         const compareRegions = view.value === "regions";
         const selectedRegion = regions.find(region => region.name === regionSelect.value);
         regionField.hidden = compareRegions;
 
         drawMapRegions(compareRegions ? regions : [selectedRegion]);
 
-    const activeScenario = mapScenarioSelect.value;
-    const historicalMode = compareRegions && activeScenario === "historical";
-    drawMapRegions(compareRegions ? regions : [selectedRegion]);
-    syncSecondMapRegions();
+        const activeScenario = mapScenarioSelect.value;
+        const historicalMode = compareRegions && activeScenario === "historical";
+        drawMapRegions(compareRegions ? regions : [selectedRegion]);
+        syncSecondMapRegions();
 
-    if (compareRegions && !activeScenario) {
-      scenarioNote.textContent = "Waiting for the map to load.";
-      key.selectAll("*").remove();
-      chart.selectAll("*").remove();
-      chart.attr("hidden", "");
-      yearNote.textContent = "";
-      hoverNote.hidden = true;
-      return () => {};
-    }
+        if (compareRegions && !activeScenario) {
+            scenarioNote.textContent = "Waiting for the map to load.";
+            key.selectAll("*").remove();
+            chart.selectAll("*").remove();
+            chart.attr("hidden", "");
+            yearNote.textContent = "";
+            hoverNote.hidden = true;
+            return () => { };
+        }
 
-    chart.attr("hidden", null);
-    hoverNote.hidden = false;
-    scenarioNote.textContent = historicalMode
-      ? "Historical simulation, 1995–2014. Zero marks each region’s baseline mean."
-      : compareRegions
-        ? `Scenario for both views: ${mapScenarioNames[activeScenario] ?? activeScenario}`
-        : "The two maps use the same July year and color scale.";
+        chart.attr("hidden", null);
+        hoverNote.hidden = false;
+        scenarioNote.textContent = historicalMode
+            ? "Historical simulation, 1995–2014. Zero marks each region’s baseline mean."
+            : compareRegions
+                ? `Scenario for both views: ${mapScenarioNames[activeScenario] ?? activeScenario}`
+                : "The two maps use the same July year and color scale.";
 
-    const series = compareRegions
+        const series = compareRegions
             ? regions.map(region => ({
                 label: region.name,
                 color: region.color,
@@ -119,17 +135,17 @@
         const margin = { top: 20, right: 20, bottom: 42, left: 56 };
         const bottom = height - margin.bottom;
         const right = width - margin.right;
-    const visibleRows = series.flatMap(line => line.values);
-    const [firstYear, lastYear] = d3.extent(visibleRows, row => row.year);
-    const visibleYDomain = historicalMode
-      ? [
-          Math.min(0, d3.min(visibleRows, row => row.warming)),
-          Math.max(0, d3.max(visibleRows, row => row.warming))
-        ]
-      : yDomain;
+        const visibleRows = series.flatMap(line => line.values);
+        const [firstYear, lastYear] = d3.extent(visibleRows, row => row.year);
+        const visibleYDomain = historicalMode
+            ? [
+                Math.min(0, d3.min(visibleRows, row => row.warming)),
+                Math.max(0, d3.max(visibleRows, row => row.warming))
+            ]
+            : yDomain;
 
-    const x = d3.scaleLinear([firstYear, lastYear], [margin.left, right]);
-    const y = d3.scaleLinear(visibleYDomain, [bottom, margin.top]).nice();
+        const x = d3.scaleLinear([firstYear, lastYear], [margin.left, right]);
+        const y = d3.scaleLinear(visibleYDomain, [bottom, margin.top]).nice();
 
         chart.attr("viewBox", `0 0 ${width} ${height}`);
         chart.selectAll("*").remove();
@@ -157,17 +173,17 @@
             .attr("font-size", 12)
             .text("Annual change (°C)");
 
-    if (historicalMode) {
-      chart.append("line")
-        .attr("x1", margin.left)
-        .attr("x2", right)
-        .attr("y1", y(0))
-        .attr("y2", y(0))
-        .attr("stroke", "#768880")
-        .attr("stroke-dasharray", "3 3");
-    }
+        if (historicalMode) {
+            chart.append("line")
+                .attr("x1", margin.left)
+                .attr("x2", right)
+                .attr("y1", y(0))
+                .attr("y2", y(0))
+                .attr("stroke", "#768880")
+                .attr("stroke-dasharray", "3 3");
+        }
 
-    const path = d3.line().x(row => x(row.year)).y(row => y(row.warming));
+        const path = d3.line().x(row => x(row.year)).y(row => y(row.warming));
 
         chart.selectAll(".warming-line")
             .data(series)
@@ -216,14 +232,57 @@
             .attr("height", bottom - margin.top)
             .attr("fill", "transparent")
             .style("cursor", "crosshair")
-            .on("pointermove", event => {
-                const year = pointerYear(event);
-                const values = series
-                    .filter(line => line.byYear.has(year))
-                    .map(line => `${line.label} ${formatValue(line.byYear.get(year))} °C`);
-                hoverNote.textContent = `${year} · ${values.join(" · ")}`;
-            })
+      .on("pointermove", event => {
+        const [mouseX, mouseY] = d3.pointer(event, chartNode);
+        const screenScale = chartNode.getScreenCTM();
+        const tolerance = 6 / Math.hypot(screenScale.a, screenScale.b);
+        let nearestLine;
+        let nearestDistance = tolerance;
+
+        for (const line of series) {
+          for (let i = 1; i < line.values.length; i++) {
+            const start = line.values[i - 1];
+            const end = line.values[i];
+            const startX = x(start.year);
+            const endX = x(end.year);
+            if (mouseX < startX - tolerance || mouseX > endX + tolerance) continue;
+
+            const startY = y(start.warming);
+            const dx = endX - startX;
+            const dy = y(end.warming) - startY;
+            const along = ((mouseX - startX) * dx + (mouseY - startY) * dy) /
+              (dx * dx + dy * dy);
+            const fraction = Math.max(0, Math.min(1, along));
+            const distance = Math.hypot(
+              mouseX - (startX + fraction * dx),
+              mouseY - (startY + fraction * dy)
+            );
+
+            if (distance <= nearestDistance) {
+              nearestDistance = distance;
+              nearestLine = line;
+            }
+          }
+        }
+
+        const year = pointerYear(event);
+        const value = nearestLine?.byYear.get(year);
+        if (value === undefined) {
+          warmingTooltip.property("hidden", true);
+          return;
+        }
+
+        warmingTooltip
+          .text(`${year}\n${nearestLine.label}: ${formatValue(value)} °C`)
+          .property("hidden", false);
+
+        const box = warmingTooltip.node();
+        const left = Math.max(8, Math.min(event.clientX + 14, window.innerWidth - box.offsetWidth - 8));
+        const top = Math.max(8, Math.min(event.clientY + 14, window.innerHeight - box.offsetHeight - 8));
+        warmingTooltip.style("left", `${left}px`).style("top", `${top}px`);
+      })
             .on("pointerleave", () => {
+                warmingTooltip.property("hidden", true);
                 hoverNote.textContent = hoverHint;
             })
             .on("click", event => {
@@ -248,7 +307,7 @@
 
     document.addEventListener("map-year-change", () => refreshMarker());
     view.addEventListener("change", redraw);
-  document.addEventListener("map-scenario-change", redraw);
+    document.addEventListener("map-scenario-change", redraw);
     regionSelect.addEventListener("change", redraw);
     window.addEventListener("resize", redraw);
 })();
