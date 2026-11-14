@@ -187,7 +187,21 @@
       color: #465d54;
     }
 
+    #year-comparison, #about { grid-column: 1 / -1; }
+    #about p { max-width: 78ch; }
+    #about h3 { margin-top: 18px; }
+    .endpoint-controls { display: grid; gap: 12px; margin: 12px 0; }
+    .endpoint-control { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; }
+    .endpoint-control input { grid-column: 1; grid-row: 2; width: 100%; }
+    .endpoint-control button { grid-column: 2; grid-row: 1 / span 2; font: inherit; }
+    .dumbbell-row { cursor: pointer; }
+    .dumbbell-row:focus-visible { outline: 2px solid #246953; outline-offset: -2px; }
+    @media (min-width: 680px) {
+      .endpoint-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     #tooltip {
+      white-space: pre-line;
       position: fixed;
       z-index: 2;
       max-width: calc(100vw - 16px);
@@ -215,70 +229,6 @@
     }
 
     .range-labels output { font-weight: 600; font-variant-numeric: tabular-nums; }
-    .dual-range { position: relative; height: 34px; margin: 2px 0 10px; }
-    .dual-range-track {
-      position: absolute;
-      left: 9px;
-      right: 9px;
-      top: 14px;
-      height: 6px;
-      border-radius: 4px;
-      background: linear-gradient(to right,
-        #dbe5df 0%, #dbe5df var(--range-start, 0%),
-        #246953 var(--range-start, 0%), #246953 var(--range-end, 100%),
-        #dbe5df var(--range-end, 100%), #dbe5df 100%);
-    }
-    .dual-range input[type="range"] {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      min-width: 0;
-      height: 34px;
-      margin: 0;
-      padding: 0;
-      appearance: none;
-      -webkit-appearance: none;
-      background: transparent;
-      pointer-events: none;
-      z-index: 2;
-    }
-    .dual-range input[type="range"]::-webkit-slider-runnable-track {
-      height: 6px;
-      background: transparent;
-    }
-    .dual-range input[type="range"]::-webkit-slider-thumb {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      margin-top: -6px;
-      border: 2px solid #246953;
-      border-radius: 50%;
-      background: white;
-      pointer-events: auto;
-      cursor: ew-resize;
-      touch-action: none;
-    }
-    .dual-range input[type="range"]::-moz-range-track { height: 6px; background: transparent; }
-    .dual-range input[type="range"]::-moz-range-progress { background: transparent; }
-    .dual-range input[type="range"]::-moz-range-thumb {
-      box-sizing: border-box;
-      width: 18px;
-      height: 18px;
-      border: 2px solid #246953;
-      border-radius: 50%;
-      background: white;
-      pointer-events: auto;
-      cursor: ew-resize;
-      touch-action: none;
-    }
-    #dumbbell-end::-webkit-slider-thumb { background: #246953; }
-    #dumbbell-end::-moz-range-thumb { background: #246953; }
-    .dual-range input[type="range"]:focus { z-index: 3; }
-    .dual-range input[type="range"]:focus-visible { outline: none; }
-    .dual-range input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid #a0bcb0; outline-offset: 3px; }
-    .dual-range input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid #a0bcb0; outline-offset: 3px; }
-    .dual-range:has(input:disabled) { opacity: .5; }
     .endpoint-key { display: flex; flex-wrap: wrap; gap: 6px 18px; }
     .endpoint-key span { display: inline-flex; align-items: center; gap: 6px; }
     .endpoint-key i { display: inline-block; width: 11px; height: 11px; border: 2px solid #465d54; border-radius: 50%; }
@@ -321,6 +271,56 @@
         grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
       }
     }
+
+    .endpoint-control input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 20px;
+      margin: 0;
+      background: transparent;
+      cursor: pointer;
+      --thumb-fill: #246953;
+    }
+
+    #dumbbell-start { --thumb-fill: #fff; }
+
+    .endpoint-control input[type="range"]::-webkit-slider-runnable-track {
+      height: 4px;
+      border-radius: 999px;
+      background: #cbdad3;
+    }
+
+    .endpoint-control input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      box-sizing: border-box;
+      width: 16px;
+      height: 16px;
+      margin-top: -6px;
+      border: 2px solid #246953;
+      border-radius: 50%;
+      background: var(--thumb-fill);
+    }
+
+    .endpoint-control input[type="range"]::-moz-range-track {
+      height: 4px;
+      border-radius: 999px;
+      background: #cbdad3;
+    }
+
+    .endpoint-control input[type="range"]::-moz-range-thumb {
+      box-sizing: border-box;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #246953;
+      border-radius: 50%;
+      background: var(--thumb-fill);
+    }
+
+    .endpoint-control input[type="range"]:focus-visible {
+      outline: 2px solid #246953;
+      outline-offset: 3px;
+    }
   </style>
 </head>
 
@@ -330,6 +330,7 @@
       <h1>Different Futures</h1>
       <p class="project-thesis">Global warming does not happen evenly.</p>
       <p>How does projected warming vary by region and emissions scenario?</p>
+      <p class="note">Try Compare scenarios at 2100, then inspect the same grid cell on both maps and <a href="#year-comparison">compare two years across regions</a>.</p>
     </header>
 
     <section aria-labelledby="map-heading">
@@ -357,6 +358,7 @@
       </div>
 
       <h3 id="chart-title">Loading map…</h3>
+      <p id="map-inspect-hint" class="note" hidden>Hover or tap either map to compare the same grid cell.</p>
       <div id="map-pair">
         <div>
           <h4 id="low-map-heading" hidden>SSP1-2.6</h4>
@@ -389,51 +391,60 @@
       <h2 id="warming-heading">Regional warming</h2>
       <p class="note">Annual temperature change relative to 1995–2014 (°C)</p>
 
-      <div class="controls">
+      <div class="controls" id="regional-scenario-field" hidden>
         <div class="field">
-          <label for="warming-scenario">Scenario</label>
-          <select id="warming-scenario" disabled></select>
+          <label for="dumbbell-scenario">Scenario for both regional charts</label>
+          <select id="dumbbell-scenario" disabled></select>
         </div>
       </div>
+
       <p id="warming-scenario-note" class="note" aria-live="polite"></p>
       <div id="warming-key" class="note"></div>
       <svg id="warming-chart" role="img" aria-label="Annual warming projections by year"></svg>
       <p id="warming-year" class="note" aria-live="polite"></p>
       <p id="warming-hover" class="note">Hover for annual values. Click a year to move the map.</p>
-      <div class="dumbbell-panel" aria-labelledby="dumbbell-heading">
-        <h3 id="dumbbell-heading">Five regions, two years</h3>
-        <p class="note">Regional annual temperature anomaly relative to 1995–2014 (°C).</p>
-        <div class="controls">
-          <div class="field">
-            <label for="dumbbell-scenario">Scenario</label>
-            <select id="dumbbell-scenario" disabled></select>
+    </section>
+
+    <section id="year-comparison" aria-labelledby="dumbbell-heading">
+        <h2 id="dumbbell-heading">Five regions, two years</h2>
+        <p class="note">Choose two years to compare annual temperatures relative to 1995–2014. The line chart shades the interval. Select a region to highlight it in the line chart and maps.</p>
+        <div class="endpoint-controls">
+          <div class="endpoint-control">
+            <label for="dumbbell-start">Start year <output id="dumbbell-start-label" for="dumbbell-start">—</output></label>
+            <button type="button" id="show-start-on-map">Show start on map</button>
+            <input id="dumbbell-start" type="range" min="0" max="0" step="1" value="0" disabled>
+          </div>
+          <div class="endpoint-control">
+            <label for="dumbbell-end">End year <output id="dumbbell-end-label" for="dumbbell-end">—</output></label>
+            <button type="button" id="show-end-on-map">Show end on map</button>
+            <input id="dumbbell-end" type="range" min="0" max="0" step="1" value="0" disabled>
           </div>
         </div>
-        <div class="range-labels">
-          <span><label for="dumbbell-start">Start year</label> <output id="dumbbell-start-label" for="dumbbell-start">—</output></span>
-          <span><label for="dumbbell-end">End year</label> <output id="dumbbell-end-label" for="dumbbell-end">—</output></span>
-        </div>
-        <div id="dumbbell-range" class="dual-range">
-          <div class="dual-range-track" aria-hidden="true"></div>
-          <input id="dumbbell-start" type="range" min="0" max="0" step="1" value="0" disabled>
-          <input id="dumbbell-end" type="range" min="0" max="0" step="1" value="0" disabled>
-        </div>
+        <p id="endpoint-map-status" class="note" role="status"></p>
         <p class="endpoint-key note">
           <span><i></i>Start year</span>
           <span><i class="end-dot"></i>End year</span>
           <span>Δ = end − start</span>
         </p>
-        <svg id="dumbbell-chart" role="img" aria-label="Start and end year anomalies for five regions"></svg>
+        <svg id="dumbbell-chart" role="group" aria-label="Start and end year anomalies for five regions"></svg>
         <p id="dumbbell-message" class="note" aria-live="polite">Loading annual regional data…</p>
         <p class="note">The dashed 0°C line is the historical baseline. Negative anomalies appear to its left. Hover or focus a row for values.</p>
-      </div>
-      <p class="note">
-        CMIP6 ACCESS-CM2. Regional means use grid-cell area weights based on latitude.
-        Annual means weight each month by its number of days. The outlined regions can include ocean cells.
-      </p>
+    </section>
+    <section id="about" aria-labelledby="about-heading">
+      <h2 id="about-heading">About this visualization</h2>
+      <p>We wanted to find where projected warming is greatest and how the answer changes with the emissions pathway and the years we choose. The map shows the spatial pattern, the line chart shows year-to-year variation, and the two-year chart makes the size of the change easier to compare across five regions.</p>
+      <h3>Design choices</h3>
+      <p>We started with one July map and a scenario dropdown. Switching back and forth made it hard to compare the same place, so the paired maps use the same year and temperature scale. Blue represents colder cells and orange and red represent warmer cells. The shared tooltip identifies the same grid cell on both maps and gives the exact difference in July temperature.</p>
+      <p>We use lines to show annual variability and keep the projection scale fixed across pathways. Bill's checkpoint plots used two fixed 20-year averages. The current comparison gives readers two movable endpoints, with open and filled dots on the same horizontal scale. The connecting segment and signed difference show how much the annual regional temperature changed between those years. The shaded interval on the line chart puts that change in the context of the intervening years.</p>
+      <h3>Data and calculations</h3>
+      <p>We use CMIP6 ACCESS-CM2 near-surface air temperature (tas), simulation member r1i1p1f1. The maps show absolute July temperature in °C. The regional charts cover the historical simulation (1995–2014) and two projections (2015–2100). We combine grid cells within five fixed geographic boxes using latitude-based area weights. These boxes can include ocean cells. Annual means weight months by their number of days. We subtract each region's 1995–2014 mean annual temperature to calculate anomalies. The two-year chart subtracts the start anomaly from the end anomaly. Its tooltip also gives the mean of the annual anomalies available within that interval.</p>
+      <p>These results describe one model and simulation member. They show how the pathways differ in this simulation.</p>
+      <h3>Development</h3>
+      <p>Mianzhi Hu built the global July map and its year and scenario controls. Yifei Chen created the annual regional trends and worked on linking the views. Bill Chen developed the checkpoint comparison that informed the two-year regional chart.</p>
+      <!-- Team estimate: confirm the effort and most time-consuming work before submitting. -->
+      <p>We estimate that we spent about 25 people-hours. Linking and testing the map and chart controls took the most time.</p>
     </section>
   </main>
 </body>
 
 </html>
-

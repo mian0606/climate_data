@@ -140,7 +140,8 @@ function drawMapRegions(regions) {
     .attr("height", region => mapY(region.bounds[0]) - mapY(region.bounds[1]))
     .attr("fill", "none")
     .attr("stroke", region => region.color)
-    .attr("stroke-width", 1.5)
+    .attr("stroke-width", region => region.focused ? 3 : 1.5)
+    .attr("opacity", region => region.muted ? 0.3 : 1)
     .attr("stroke-dasharray", "5 3")
     .attr("vector-effect", "non-scaling-stroke");
 }
@@ -216,7 +217,7 @@ function drawMapYear() {
   mapTitle.textContent = isComparingMaps() ? `July ${year}` : `July ${year} — ${mapScenarioNames[scenario] ?? scenario}`;
   mapYearLabel.textContent = year;
   mapSlider.setAttribute("aria-valuetext", String(year));
-  mapTooltip.property("hidden", true);
+  clearMapInspection();
 
   mapTemperatures = d3.rollup(
     rows,
@@ -339,18 +340,10 @@ async function loadMap() {
         const [bottom, top] = latEdges.get(cell.lat);
         return mapY(bottom) - mapY(top);
       })
-      .on("pointerenter", (event, cell) => {
-        const temperature = mapTemperatures.get(cell.key);
-        const value = Number.isFinite(temperature) ? `${temperature.toFixed(2)} °C` : "Missing";
-
-        mapTooltip
-          .text(`July ${getSelectedMapYear()} · ${latText(cell.lat)}, ${lonText(cell.lon)} · ${value}`)
-          .property("hidden", false);
-
-        positionMapTooltip(event);
-      })
+      .on("pointerenter", inspectMapCell)
       .on("pointermove", positionMapTooltip)
-      .on("pointerleave", () => mapTooltip.property("hidden", true));
+      .on("pointerleave", clearMapInspection)
+      .on("click", inspectMapCell);
 
     mapData = d3.group(rows, row => row.scenario, row => row.year);
     const scenarios = Array.from(mapData.keys()).sort();
@@ -388,6 +381,59 @@ let secondMapCells;
 let secondMapRegions;
 let secondMapTemperatures;
 
+let secondMapOutline;
+
+const mapOutline = appendCellOutline(mapSvg);
+
+function appendCellOutline(svg) {
+  return svg.append("rect")
+    .attr("class", "map-cell-outline")
+    .attr("display", "none")
+    .attr("fill", "none")
+    .attr("stroke", "#172c28")
+    .attr("stroke-width", 2)
+    .attr("vector-effect", "non-scaling-stroke")
+    .attr("pointer-events", "none");
+}
+
+function clearMapInspection() {
+  mapTooltip.property("hidden", true);
+  mapOutline.attr("display", "none");
+  secondMapOutline?.attr("display", "none");
+}
+
+function inspectMapCell(event, cell) {
+  const low = mapTemperatures.get(cell.key);
+  const format = value => Number.isFinite(value) ? `${value.toFixed(2)} °C` : "Missing";
+  const location = `July ${getSelectedMapYear()} · ${latText(cell.lat)}, ${lonText(cell.lon)}`;
+  const lines = [location];
+
+  if (isComparingMaps()) {
+    const high = secondMapTemperatures.get(cell.key);
+    const difference = Number.isFinite(low) && Number.isFinite(high)
+      ? `${d3.format("+.2f")(high - low)} °C`
+      : "Unavailable";
+    lines.push(`SSP1-2.6: ${format(low)}`, `SSP5-8.5: ${format(high)}`,
+      `Difference (SSP5-8.5 − SSP1-2.6): ${difference}`);
+
+    for (const outline of [mapOutline, secondMapOutline]) {
+      for (const attribute of ["x", "y", "width", "height"]) {
+        outline.attr(attribute, event.currentTarget.getAttribute(attribute));
+      }
+      outline.attr("display", null);
+    }
+  } else {
+    lines.push(format(low));
+  }
+
+  mapTooltip.text(lines.join("\n")).property("hidden", false);
+  positionMapTooltip(event);
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") clearMapInspection();
+});
+
 function isComparingMaps() {
   return mapModeSelect.value === "scenarios" &&
     mapData?.has("ssp126") && mapData?.has("ssp585");
@@ -401,11 +447,12 @@ function syncMapMode() {
   mapScenarioField.hidden = compare;
   lowMapHeading.hidden = !compare;
   highMapPanel.hidden = !compare;
+  document.querySelector("#map-inspect-hint").hidden = !compare;
 
-  if (compare) {
+  if (compare && previousSingleScenario === undefined) {
     previousSingleScenario = mapScenarioSelect.value;
     mapScenarioSelect.value = "ssp126";
-  } else if (previousSingleScenario !== undefined) {
+  } else if (!compare && previousSingleScenario !== undefined) {
     mapScenarioSelect.value = previousSingleScenario;
     previousSingleScenario = undefined;
   }
@@ -427,23 +474,16 @@ function createSecondMap() {
   const cellLayerIndex = Array.from(original.children).indexOf(mapCellsLayer.node());
   const regionLayerIndex = Array.from(original.children).indexOf(mapRegionsLayer.node());
   secondMapRegions = clone.children[regionLayerIndex];
+  secondMapOutline = d3.select(clone).select(".map-cell-outline");
   secondMapCells = d3.select(clone.children[cellLayerIndex])
     .selectAll("rect")
     .data(mapCells.data());
 
   secondMapCells
-    .on("pointerenter", (event, cell) => {
-      const temperature = secondMapTemperatures.get(cell.key);
-      const value = Number.isFinite(temperature) ? `${temperature.toFixed(2)} °C` : "Missing";
-
-      mapTooltip
-        .text(`SSP5-8.5 · July ${getSelectedMapYear()} · ${latText(cell.lat)}, ${lonText(cell.lon)} · ${value}`)
-        .property("hidden", false);
-
-      positionMapTooltip(event);
-    })
-    .on("pointermove", positionMapTooltip)
-    .on("pointerleave", () => mapTooltip.property("hidden", true));
+    .on("pointerenter", inspectMapCell)
+      .on("pointermove", positionMapTooltip)
+      .on("pointerleave", clearMapInspection)
+      .on("click", inspectMapCell);
 }
 
 function syncSecondMapRegions() {
@@ -477,6 +517,8 @@ loadMap();
 
 // Dumbbell chart: compare all five regional annual means at two selected years.
 // The source CSV supplies annual anomalies; no annual means are inferred from July data.
+let regionalComparison;
+
 async function initDumbbellChart() {
   const chart = d3.select("#dumbbell-chart");
   if (chart.empty()) return;
@@ -494,7 +536,7 @@ async function initDumbbellChart() {
   const scenarios = Array.from(new Set(rows.map(row => row.scenario))).sort();
   d3.select(scenarioField).selectAll("option").data(scenarios).join("option")
     .attr("value", value => value).text(value => mapScenarioNames[value] ?? value);
-  scenarioField.disabled = false;
+  const scenarioControl = document.querySelector("#regional-scenario-field");
   scenarioField.value = scenarios.includes(mapScenarioSelect.value) ? mapScenarioSelect.value
     : scenarios.includes("ssp585") ? "ssp585" : scenarios[0];
   let availableYears = [];
@@ -532,6 +574,7 @@ async function initDumbbellChart() {
 
   function render() {
     hideTooltip();
+    document.querySelector("#endpoint-map-status").textContent = "";
     if (!availableYears.length) return;
     const startYear = availableYears[Number(startField.value)];
     const endYear = availableYears[Number(endField.value)];
@@ -539,10 +582,8 @@ async function initDumbbellChart() {
     document.querySelector("#dumbbell-end-label").textContent = endYear;
     startField.setAttribute("aria-valuetext", String(startYear));
     endField.setAttribute("aria-valuetext", String(endYear));
-    const rangeTrack = document.querySelector("#dumbbell-range");
-    const rangeSteps = Math.max(1, availableYears.length - 1);
-    rangeTrack.style.setProperty("--range-start", `${100 * Number(startField.value) / rangeSteps}%`);
-    rangeTrack.style.setProperty("--range-end", `${100 * Number(endField.value) / rangeSteps}%`);
+    regionalComparison = { scenario: scenarioField.value, startYear, endYear };
+    document.dispatchEvent(new Event("regional-interval-change"));
     const comparisons = calculateRegionalChanges(rows, scenarioField.value, startYear, endYear);
     const width = Math.max(320, chart.node().clientWidth);
     const height = 350;
@@ -573,12 +614,19 @@ async function initDumbbellChart() {
 
     const groups = chart.selectAll(".dumbbell-row").data(comparisons).join("g")
       .attr("class", "dumbbell-row").attr("transform", row => `translate(0,${y(row.name)})`)
-      .attr("tabindex", 0).attr("role", "img")
+      .attr("tabindex", 0).attr("role", "button")
       .attr("aria-label", row => row.available
         ? `${row.name}: ${startYear}, ${signed(row.start)} degrees; ${endYear}, ${signed(row.end)} degrees; change ${signed(row.delta)} degrees`
         : `${row.name}: annual data missing`)
       .on("pointerenter", showTooltip).on("pointermove", showTooltip)
-      .on("pointerleave", hideTooltip).on("focus", showTooltip).on("blur", hideTooltip);
+      .on("pointerleave", hideTooltip).on("focus", showTooltip).on("blur", hideTooltip)
+      .on("click", (_, row) => focusRegion(row.name))
+      .on("keydown", (event, row) => {
+        if (event.key === "Escape") hideTooltip();
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        focusRegion(row.name);
+      });
     groups.append("rect").attr("x", 0).attr("y", -23).attr("width", width).attr("height", 46)
       .attr("fill", "transparent");
     groups.append("text").attr("x", left - 12).attr("y", 4).attr("text-anchor", "end")
@@ -612,6 +660,10 @@ async function initDumbbellChart() {
         : "Open dot: start year; filled dot: end year. Δ is the change between the two annual regional means.");
   }
 
+  function focusRegion(region) {
+    document.dispatchEvent(new CustomEvent("regional-focus", { detail: region }));
+  }
+
   function setScenario() {
     const previousStart = availableYears[Number(startField.value)];
     const previousEnd = availableYears[Number(endField.value)];
@@ -635,15 +687,33 @@ async function initDumbbellChart() {
     render();
   });
   scenarioField.addEventListener("change", setScenario);
-  document.addEventListener("map-scenario-change", () => {
-    // In the side-by-side map mode this chart keeps its own scenario selection.
-    if (mapModeSelect.value === "regions" && scenarios.includes(mapScenarioSelect.value)) {
+  function syncRegionalScenario() {
+    const comparing = isComparingMaps();
+    scenarioControl.hidden = !comparing;
+    scenarioField.disabled = !comparing;
+    if (!comparing && scenarios.includes(mapScenarioSelect.value)) {
       scenarioField.value = mapScenarioSelect.value;
-      setScenario();
+    } else if (comparing && scenarioField.value === "historical") {
+      scenarioField.value = scenarios.includes("ssp585") ? "ssp585" : scenarios[0];
     }
-  });
+    setScenario();
+  }
+
+  document.addEventListener("map-scenario-change", syncRegionalScenario);
+  for (const [id, field] of [["start", startField], ["end", endField]]) {
+    document.querySelector(`#show-${id}-on-map`).addEventListener("click", () => {
+      const year = availableYears[Number(field.value)];
+      document.querySelector("#endpoint-map-status").textContent = selectMapYear(year)
+        ? `Map updated to July ${year}.`
+        : year === undefined
+          ? "Regional data are still loading."
+          : `July ${year} is unavailable in the current map view.`;
+    });
+  }
+  d3.select(scenarioField).selectAll("option").filter(value => value === "historical")
+    .property("hidden", true).property("disabled", true);
   window.addEventListener("resize", render);
-  setScenario();
+  syncRegionalScenario();
 }
 
 initDumbbellChart();
