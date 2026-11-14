@@ -1,6 +1,7 @@
 (async function () {
     const regions = climateRegions;
 
+    const warmingScenario = document.querySelector("#warming-scenario");
     const scenarioNote = document.querySelector("#warming-scenario-note");
     const yearNote = document.querySelector("#warming-year");
     const hoverNote = document.querySelector("#warming-hover");
@@ -21,6 +22,20 @@
     }
 
     const projectionRows = rows.filter(row => row.scenario !== "historical");
+    const availableScenarios = Array.from(new Set(projectionRows.map(row => row.scenario))).sort();
+    if (!availableScenarios.length) {
+        yearNote.textContent = "No annual projection scenarios are available.";
+        return;
+    }
+    const initialScenario = warmingScenario.value || mapScenarioSelect.value;
+    d3.select(warmingScenario).selectAll("option")
+        .data(availableScenarios)
+        .join("option")
+        .attr("value", scenario => scenario)
+        .text(scenario => mapScenarioNames[scenario] ?? scenario);
+    warmingScenario.value = availableScenarios.includes(initialScenario) ? initialScenario
+        : availableScenarios.includes("ssp585") ? "ssp585" : availableScenarios[0];
+    warmingScenario.disabled = false;
     const yDomain = [
         Math.min(0, d3.min(projectionRows, row => row.warming)),
         d3.max(projectionRows, row => row.warming)
@@ -45,13 +60,13 @@
 
     function draw() {
         warmingTooltip.property("hidden", true);
-        const activeScenario = mapScenarioSelect.value;
+        const activeScenario = warmingScenario.value;
         const historicalMode = activeScenario === "historical";
         drawMapRegions(regions);
         syncSecondMapRegions();
 
         if (!activeScenario) {
-            scenarioNote.textContent = "Waiting for the map to load.";
+            scenarioNote.textContent = "Waiting for annual scenario data.";
             key.selectAll("*").remove();
             chart.selectAll("*").remove();
             chart.attr("hidden", "");
@@ -115,7 +130,7 @@
             items.attr("aria-pressed", line => String(line.label === highlightedRegion))
                 .classed("is-muted", line => highlightedRegion !== null && line.label !== highlightedRegion);
             const lines = chart.selectAll(".warming-line")
-                .attr("opacity", line => highlightedRegion === null || line.label === highlightedRegion ? 1 : 0.14)
+                .attr("opacity", line => highlightedRegion === null || line.label === highlightedRegion ? 1 : 0.05)
                 .attr("stroke-width", line => line.label === highlightedRegion ? 4 : 3);
             if (highlightedRegion !== null) {
                 lines.filter(line => line.label === highlightedRegion).raise();
@@ -146,7 +161,8 @@
         const x = d3.scaleLinear([firstYear, lastYear], [margin.left, right]);
         const y = d3.scaleLinear(visibleYDomain, [bottom, margin.top]).nice();
 
-        chart.attr("viewBox", `0 0 ${width} ${height}`);
+        chart.attr("viewBox", `0 0 ${width} ${height}`)
+            .attr("aria-label", `Annual regional warming under ${mapScenarioNames[activeScenario] ?? activeScenario}`);
         chart.selectAll("*").remove();
 
         chart.append("g")
@@ -312,6 +328,7 @@
     }
 
     document.addEventListener("map-year-change", () => refreshMarker());
+    warmingScenario.addEventListener("change", redraw);
     document.addEventListener("map-scenario-change", redraw);
     window.addEventListener("resize", redraw);
 })();
