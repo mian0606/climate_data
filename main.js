@@ -1,3 +1,57 @@
+// Bounds: [south, north, west, east]. Shared by the map and both regional charts.
+const climateRegions = [
+  { name: "Western North America", bounds: [30, 60, -130, -105], color: "#0072b2" },
+  { name: "Europe", bounds: [35, 60, -10, 30], color: "#b8460c" },
+  { name: "East Asia", bounds: [25, 50, 100, 145], color: "#087a59" },
+  { name: "West Asia", bounds: [15, 40, 35, 65], color: "#8055ad" },
+  { name: "West–Central Africa", bounds: [-5, 20, -20, 30], color: "#bb3870" }
+];
+
+// Read the annual regional anomalies once. The line chart and dumbbell reuse them.
+let regionalWarmingPromise;
+function loadRegionalWarming() {
+  if (!regionalWarmingPromise) {
+    regionalWarmingPromise = d3.csv("./regional_warming.csv", row => {
+      const year = Number(row.year);
+      const warming = Number(row.anomaly_c);
+      if (!row.region || !row.scenario || !row.year?.trim() ||
+          !row.anomaly_c?.trim() || !Number.isInteger(year) || !Number.isFinite(warming)) return null;
+      return { region: row.region, scenario: row.scenario, year, warming };
+    }).then(rows => {
+      if (!rows.length) throw new Error("No valid regional warming data.");
+      return rows;
+    });
+  }
+  return regionalWarmingPromise;
+}
+
+// All comparison calculations live here in main.js.
+// Each source value is already an area-weighted regional ANNUAL anomaly.
+// delta is end minus start, not the mean anomaly within the selected interval.
+function calculateRegionalChanges(rows, scenario, startYear, endYear) {
+  if (!Number.isInteger(startYear) || !Number.isInteger(endYear) || startYear > endYear) {
+    throw new Error("The start year must not be later than the end year.");
+  }
+  const relevant = rows.filter(row => row.scenario === scenario);
+  const byRegion = d3.group(relevant, row => row.region);
+  return climateRegions.map(region => {
+    const values = byRegion.get(region.name) ?? [];
+    const byYear = d3.rollup(values, group => d3.mean(group, row => row.warming), row => row.year);
+    const start = byYear.get(startYear);
+    const end = byYear.get(endYear);
+    const interval = Array.from(byYear, ([year, value]) => ({ year, value }))
+      .filter(row => row.year >= startYear && row.year <= endYear);
+    const available = Number.isFinite(start) && Number.isFinite(end);
+    return { ...region, start, end,
+      delta: available ? end - start : undefined,
+      periodMean: d3.mean(interval, row => row.value),
+      available, startYear, endYear,
+      observedYears: interval.length,
+      expectedYears: endYear - startYear + 1
+    };
+  });
+}
+
 const mapWidth = 1100;
 const mapHeight = 600;
 const mapMargin = { top: 20, right: 25, bottom: 50, left: 60 };
@@ -85,7 +139,7 @@ function drawMapRegions(regions) {
     .attr("width", region => mapX(region.bounds[3]) - mapX(region.bounds[2]))
     .attr("height", region => mapY(region.bounds[0]) - mapY(region.bounds[1]))
     .attr("fill", "none")
-    .attr("stroke", "#18352e")
+    .attr("stroke", region => region.color)
     .attr("stroke-width", 1.5)
     .attr("stroke-dasharray", "5 3")
     .attr("vector-effect", "non-scaling-stroke");
@@ -323,7 +377,7 @@ async function loadMap() {
 mapScenarioSelect.addEventListener("change", changeMapScenario);
 mapSlider.addEventListener("input", drawMapYear);
 
-const mapModeSelect = document.querySelector("#warming-view");
+const mapModeSelect = document.querySelector("#map-view");
 const mapPair = document.querySelector("#map-pair");
 const lowMapHeading = document.querySelector("#low-map-heading");
 const highMapPanel = document.querySelector("#high-map-panel");
@@ -420,3 +474,176 @@ function drawSecondMap(year) {
 
 mapModeSelect.addEventListener("change", syncMapMode);
 loadMap();
+
+// Dumbbell chart: compare all five regional annual means at two selected years.
+// The source CSV supplies annual anomalies; no annual means are inferred from July data.
+async function initDumbbellChart() {
+  const chart = d3.select("#dumbbell-chart");
+  if (chart.empty()) return;
+  const scenarioField = document.querySelector("#dumbbell-scenario");
+  const startField = document.querySelector("#dumbbell-start");
+  const endField = document.querySelector("#dumbbell-end");
+  const message = document.querySelector("#dumbbell-message");
+  let rows;
+  try {
+    rows = await loadRegionalWarming();
+  } catch (error) {
+    message.textContent = `Could not load annual regional data: ${error.message}`;
+    return;
+  }
+  const scenarios = Array.from(new Set(rows.map(row => row.scenario))).sort();
+  d3.select(scenarioField).selectAll("option").data(scenarios).join("option")
+    .attr("value", value => value).text(value => mapScenarioNames[value] ?? value);
+  scenarioField.disabled = false;
+  scenarioField.value = scenarios.includes(mapScenarioSelect.value) ? mapScenarioSelect.value
+    : scenarios.includes("ssp585") ? "ssp585" : scenarios[0];
+  let availableYears = [];
+  // A common x domain across scenarios and year ranges prevents scale changes from
+  // making small differences look larger. A little room left of 0 accommodates negatives.
+  const minAnomaly = Math.min(-0.5, d3.min(rows, row => row.warming));
+  const maxAnomaly = Math.max(1, d3.max(rows, row => row.warming));
+  const axisMin = Math.floor(minAnomaly * 2) / 2;
+  const axisMax = Math.ceil((maxAnomaly + 0.3) * 2) / 2;
+  const tooltip = d3.select("body").append("div").property("hidden", true)
+    .attr("class", "dumbbell-tooltip").attr("role", "tooltip")
+    .style("position", "fixed").style("z-index", 4).style("pointer-events", "none")
+    .style("max-width", "calc(100vw - 16px)").style("padding", "9px 12px")
+    .style("background", "#18352e").style("color", "white")
+    .style("border-radius", "7px").style("font-size", "13px").style("white-space", "pre-line");
+  const signed = d3.format("+.2f");
+
+  function hideTooltip() { tooltip.property("hidden", true); }
+  function showTooltip(event, comparison) {
+    const details = comparison.available
+      ? `${comparison.name}\n${comparison.startYear}: ${signed(comparison.start)} °C\n` +
+        `${comparison.endYear}: ${signed(comparison.end)} °C\n` +
+        `End − start: ${signed(comparison.delta)} °C\n` +
+        `Mean anomaly within interval: ${signed(comparison.periodMean)} °C\n` +
+        `Available years: ${comparison.observedYears}/${comparison.expectedYears}`
+      : `${comparison.name}\nAnnual regional data missing for one or both selected years.`;
+    tooltip.text(details).property("hidden", false);
+    const anchor = event.currentTarget.getBoundingClientRect();
+    const clientX = Number.isFinite(event.clientX) ? event.clientX : anchor.left + anchor.width / 2;
+    const clientY = Number.isFinite(event.clientY) ? event.clientY : anchor.bottom;
+    const box = tooltip.node();
+    tooltip.style("left", `${Math.max(8, Math.min(clientX + 14, innerWidth - box.offsetWidth - 8))}px`)
+      .style("top", `${Math.max(8, Math.min(clientY + 14, innerHeight - box.offsetHeight - 8))}px`);
+  }
+
+  function render() {
+    hideTooltip();
+    if (!availableYears.length) return;
+    const startYear = availableYears[Number(startField.value)];
+    const endYear = availableYears[Number(endField.value)];
+    document.querySelector("#dumbbell-start-label").textContent = startYear;
+    document.querySelector("#dumbbell-end-label").textContent = endYear;
+    startField.setAttribute("aria-valuetext", String(startYear));
+    endField.setAttribute("aria-valuetext", String(endYear));
+    const rangeTrack = document.querySelector("#dumbbell-range");
+    const rangeSteps = Math.max(1, availableYears.length - 1);
+    rangeTrack.style.setProperty("--range-start", `${100 * Number(startField.value) / rangeSteps}%`);
+    rangeTrack.style.setProperty("--range-end", `${100 * Number(endField.value) / rangeSteps}%`);
+    const comparisons = calculateRegionalChanges(rows, scenarioField.value, startYear, endYear);
+    const width = Math.max(320, chart.node().clientWidth);
+    const height = 350;
+    const left = width < 480 ? 132 : 178;
+    const right = width - 71;
+    const top = 35, bottom = 289;
+    const x = d3.scaleLinear([axisMin, axisMax], [left, right]);
+    const y = d3.scalePoint(climateRegions.map(region => region.name), [top + 20, bottom - 34]);
+    chart.attr("viewBox", `0 0 ${width} ${height}`);
+    chart.selectAll("*").remove();
+    chart.append("title").text(`${mapScenarioNames[scenarioField.value] ?? scenarioField.value}: ${startYear} to ${endYear}`);
+
+    const ticks = Array.from(new Set([...x.ticks(width < 480 ? 4 : 7), 0])).sort((a, b) => a - b);
+    chart.append("g").attr("transform", `translate(0,${bottom})`)
+      .call(d3.axisBottom(x).tickValues(ticks).tickSize(-(bottom - top)).tickPadding(8))
+      .call(axis => axis.select(".domain").attr("stroke", "#899e94"))
+      .call(axis => axis.selectAll(".tick line").attr("stroke", "#e3eae5"));
+    chart.append("line").attr("class", "dumbbell-zero")
+      .attr("x1", x(0)).attr("x2", x(0)).attr("y1", top).attr("y2", bottom)
+      .attr("stroke", "#526b5e").attr("stroke-width", 1.2).attr("stroke-dasharray", "4 3");
+    chart.append("text").attr("x", x(0)).attr("y", 20).attr("text-anchor", "middle")
+      .attr("font-size", 11).attr("fill", "#465d54").text("Baseline 0°C");
+    chart.append("text").attr("x", width - 6).attr("y", 20).attr("text-anchor", "end")
+      .attr("font-size", 11).attr("fill", "#465d54").text("Δ (°C)");
+    chart.append("text").attr("x", (left + right) / 2).attr("y", height - 8)
+      .attr("text-anchor", "middle").attr("font-size", 12)
+      .text("Annual temperature anomaly (°C)");
+
+    const groups = chart.selectAll(".dumbbell-row").data(comparisons).join("g")
+      .attr("class", "dumbbell-row").attr("transform", row => `translate(0,${y(row.name)})`)
+      .attr("tabindex", 0).attr("role", "img")
+      .attr("aria-label", row => row.available
+        ? `${row.name}: ${startYear}, ${signed(row.start)} degrees; ${endYear}, ${signed(row.end)} degrees; change ${signed(row.delta)} degrees`
+        : `${row.name}: annual data missing`)
+      .on("pointerenter", showTooltip).on("pointermove", showTooltip)
+      .on("pointerleave", hideTooltip).on("focus", showTooltip).on("blur", hideTooltip);
+    groups.append("rect").attr("x", 0).attr("y", -23).attr("width", width).attr("height", 46)
+      .attr("fill", "transparent");
+    groups.append("text").attr("x", left - 12).attr("y", 4).attr("text-anchor", "end")
+      .attr("font-size", width < 480 ? 10 : 12).attr("fill", row => row.color)
+      .text(row => width < 480 && row.name === "Western North America" ? "W. North America" : row.name);
+    const valid = groups.filter(row => row.available);
+    valid.append("line").attr("class", "dumbbell-connector")
+      .attr("x1", row => x(row.start)).attr("x2", row => x(row.end))
+      .attr("stroke", row => row.color).attr("stroke-width", 3).attr("stroke-opacity", 0.65);
+    valid.append("circle").attr("class", "dumbbell-start-dot")
+      .attr("cx", row => x(row.start)).attr("r", 5.5).attr("fill", "white")
+      .attr("stroke", row => row.color).attr("stroke-width", 2);
+    valid.append("circle").attr("class", "dumbbell-end-dot")
+      .attr("cx", row => x(row.end)).attr("r", 5.5).attr("fill", row => row.color)
+      .attr("stroke", "white").attr("stroke-width", 0.8);
+    valid.append("text").attr("class", "dumbbell-start-value")
+      .attr("x", row => x(row.start)).attr("y", -11).attr("text-anchor", "middle")
+      .attr("font-size", 10).attr("fill", "#465d54").text(row => signed(row.start));
+    valid.append("text").attr("class", "dumbbell-end-value")
+      .attr("x", row => x(row.end)).attr("y", 20).attr("text-anchor", "middle")
+      .attr("font-size", 10).attr("fill", row => row.color).text(row => signed(row.end));
+    valid.append("text").attr("class", "dumbbell-delta")
+      .attr("x", width - 6).attr("y", 4).attr("text-anchor", "end")
+      .attr("font-size", 12).attr("fill", row => row.color).text(row => signed(row.delta));
+    groups.filter(row => !row.available).append("text")
+      .attr("x", x(0) + 8).attr("y", 4).attr("font-size", 11).attr("fill", "#7b8c81")
+      .text("Annual data unavailable");
+    const missing = comparisons.filter(row => !row.available).map(row => row.name);
+    message.textContent = `${mapScenarioNames[scenarioField.value] ?? scenarioField.value} · ${startYear}–${endYear}. ` +
+      (missing.length ? `Missing annual data: ${missing.join(", ")}.`
+        : "Open dot: start year; filled dot: end year. Δ is the change between the two annual regional means.");
+  }
+
+  function setScenario() {
+    const previousStart = availableYears[Number(startField.value)];
+    const previousEnd = availableYears[Number(endField.value)];
+    availableYears = Array.from(new Set(rows.filter(row => row.scenario === scenarioField.value)
+      .map(row => row.year))).sort((a, b) => a - b);
+    const startIndex = availableYears.indexOf(previousStart);
+    const endIndex = availableYears.indexOf(previousEnd);
+    startField.max = endField.max = availableYears.length - 1;
+    startField.value = String(startIndex >= 0 ? startIndex : 0);
+    endField.value = String(endIndex >= 0 ? endIndex : availableYears.length - 1);
+    if (+startField.value > +endField.value) startField.value = endField.value;
+    startField.disabled = endField.disabled = availableYears.length < 2;
+    render();
+  }
+  startField.addEventListener("input", () => {
+    if (+startField.value > +endField.value) endField.value = startField.value;
+    render();
+  });
+  endField.addEventListener("input", () => {
+    if (+endField.value < +startField.value) startField.value = endField.value;
+    render();
+  });
+  scenarioField.addEventListener("change", setScenario);
+  document.addEventListener("map-scenario-change", () => {
+    // In the side-by-side map mode this chart keeps its own scenario selection.
+    if (mapModeSelect.value === "regions" && scenarios.includes(mapScenarioSelect.value)) {
+      scenarioField.value = mapScenarioSelect.value;
+      setScenario();
+    }
+  });
+  window.addEventListener("resize", render);
+  setScenario();
+}
+
+initDumbbellChart();
