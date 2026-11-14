@@ -1,19 +1,7 @@
 (async function () {
-    const regions = [
-        { name: "Western North America", bounds: [30, 60, -130, -105], color: "#0072b2" },
-        { name: "Europe", bounds: [35, 60, -10, 30], color: "#b8460c" },
-        { name: "East Asia", bounds: [25, 50, 100, 145], color: "#087a59" }
-    ];
+    const regions = climateRegions;
 
-    const scenarios = [
-        { id: "ssp126", label: "SSP1-2.6", color: "#0072b2", dash: "6 4" },
-        { id: "ssp585", label: "SSP5-8.5", color: "#b8460c" }
-    ];
-
-    const view = document.querySelector("#warming-view");
     const scenarioNote = document.querySelector("#warming-scenario-note");
-    const regionSelect = document.querySelector("#warming-region");
-    const regionField = document.querySelector("#warming-region-field");
     const yearNote = document.querySelector("#warming-year");
     const hoverNote = document.querySelector("#warming-hover");
     const key = d3.select("#warming-key");
@@ -23,19 +11,7 @@
 
     let rows;
     try {
-        rows = await d3.csv("./regional_warming.csv", row => {
-            const year = Number(row.year);
-            const warming = Number(row.anomaly_c);
-
-            if (
-                !row.region || !row.scenario || !row.year?.trim() ||
-                !row.anomaly_c?.trim() || !Number.isInteger(year) || !Number.isFinite(warming)
-            ) {
-                return null;
-            }
-
-            return { region: row.region, scenario: row.scenario, year, warming };
-        });
+        rows = await loadRegionalWarming();
 
         if (!rows.length) throw new Error("No valid regional warming data.");
     } catch (error) {
@@ -50,6 +26,7 @@
         d3.max(projectionRows, row => row.warming)
     ];
     const formatValue = d3.format("+.2f");
+    let highlightedRegion = null;
 
     const warmingTooltip = d3.select("body").append("div")
         .attr("aria-hidden", "true")
@@ -68,18 +45,12 @@
 
     function draw() {
         warmingTooltip.property("hidden", true);
-        const compareRegions = view.value === "regions";
-        const selectedRegion = regions.find(region => region.name === regionSelect.value);
-        regionField.hidden = compareRegions;
-
-        drawMapRegions(compareRegions ? regions : [selectedRegion]);
-
         const activeScenario = mapScenarioSelect.value;
-        const historicalMode = compareRegions && activeScenario === "historical";
-        drawMapRegions(compareRegions ? regions : [selectedRegion]);
+        const historicalMode = activeScenario === "historical";
+        drawMapRegions(regions);
         syncSecondMapRegions();
 
-        if (compareRegions && !activeScenario) {
+        if (!activeScenario) {
             scenarioNote.textContent = "Waiting for the map to load.";
             key.selectAll("*").remove();
             chart.selectAll("*").remove();
@@ -93,22 +64,13 @@
         hoverNote.hidden = false;
         scenarioNote.textContent = historicalMode
             ? "Historical simulation, 1995–2014. Zero marks each region’s baseline mean."
-            : compareRegions
-                ? `Scenario for both views: ${mapScenarioNames[activeScenario] ?? activeScenario}`
-                : "The two maps use the same July year and color scale.";
+            : `Scenario: ${mapScenarioNames[activeScenario] ?? activeScenario}`;
 
-        const series = compareRegions
-            ? regions.map(region => ({
+        const series = regions.map(region => ({
                 label: region.name,
                 color: region.color,
                 values: rows.filter(row =>
                     row.region === region.name && row.scenario === activeScenario
-                )
-            }))
-            : scenarios.map(scenario => ({
-                ...scenario,
-                values: rows.filter(row =>
-                    row.region === selectedRegion.name && row.scenario === scenario.id
                 )
             }));
 
@@ -118,10 +80,27 @@
         }
 
         key.selectAll("*").remove();
+        key.attr("role", "group").attr("aria-label", "Highlight a region in the warming chart");
+        const allButton = key.append("button")
+            .attr("type", "button")
+            .attr("class", "key-item key-all")
+            .text("All regions")
+            .on("click", () => {
+                highlightedRegion = null;
+                applyHighlight();
+            });
         const items = key.selectAll(".key-item")
+            .filter(function () { return !this.classList.contains("key-all"); })
             .data(series)
-            .join("span")
-            .attr("class", "key-item");
+            .join("button")
+            .attr("type", "button")
+            .attr("class", "key-item")
+            .style("--series-color", line => line.color)
+            .attr("title", line => `Highlight ${line.label}; click again to show all regions`)
+            .on("click", (event, line) => {
+                highlightedRegion = highlightedRegion === line.label ? null : line.label;
+                applyHighlight();
+            });
 
         items.append("span")
             .attr("class", "swatch")
@@ -130,12 +109,32 @@
 
         items.append("span").text(line => line.label);
 
+        function applyHighlight() {
+            warmingTooltip.property("hidden", true);
+            allButton.attr("aria-pressed", String(highlightedRegion === null));
+            items.attr("aria-pressed", line => String(line.label === highlightedRegion))
+                .classed("is-muted", line => highlightedRegion !== null && line.label !== highlightedRegion);
+            const lines = chart.selectAll(".warming-line")
+                .attr("opacity", line => highlightedRegion === null || line.label === highlightedRegion ? 1 : 0.14)
+                .attr("stroke-width", line => line.label === highlightedRegion ? 4 : 3);
+            if (highlightedRegion !== null) {
+                lines.filter(line => line.label === highlightedRegion).raise();
+            }
+        }
+
+        applyHighlight();
+
         const width = Math.max(240, chartNode.clientWidth);
         const height = 270;
         const margin = { top: 20, right: 20, bottom: 42, left: 56 };
         const bottom = height - margin.bottom;
         const right = width - margin.right;
         const visibleRows = series.flatMap(line => line.values);
+        if (!visibleRows.length) {
+            chart.selectAll("*").remove();
+            yearNote.textContent = "No annual regional data for this selection.";
+            return () => {};
+        }
         const [firstYear, lastYear] = d3.extent(visibleRows, row => row.year);
         const visibleYDomain = historicalMode
             ? [
@@ -171,7 +170,7 @@
             .attr("transform", `translate(13,${(margin.top + bottom) / 2}) rotate(-90)`)
             .attr("text-anchor", "middle")
             .attr("font-size", 12)
-            .text("Annual change (°C)");
+            .text("Temperature anomaly (°C)");
 
         if (historicalMode) {
             chart.append("line")
@@ -191,7 +190,12 @@
             .attr("class", "warming-line")
             .attr("fill", "none")
             .attr("stroke", line => line.color)
-            .attr("stroke-width", 2.2)
+            .attr("stroke-width", 3)
+            .attr("stroke-opacity", 1)
+            .attr("stroke-linecap", "round")
+            .attr("stroke-linejoin", "round")
+            .attr("vector-effect", "non-scaling-stroke")
+            .attr("pointer-events", "none")
             .attr("stroke-dasharray", line => line.dash ?? null)
             .attr("d", line => path(line.values));
 
@@ -240,6 +244,7 @@
         let nearestDistance = tolerance;
 
         for (const line of series) {
+          if (highlightedRegion !== null && line.label !== highlightedRegion) continue;
           for (let i = 1; i < line.values.length; i++) {
             const start = line.values[i - 1];
             const end = line.values[i];
@@ -294,6 +299,7 @@
                 }
             });
 
+        applyHighlight();
         hoverNote.textContent = hoverHint;
         showMapYear();
         return showMapYear;
@@ -306,8 +312,6 @@
     }
 
     document.addEventListener("map-year-change", () => refreshMarker());
-    view.addEventListener("change", redraw);
     document.addEventListener("map-scenario-change", redraw);
-    regionSelect.addEventListener("change", redraw);
     window.addEventListener("resize", redraw);
 })();
