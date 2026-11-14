@@ -370,7 +370,6 @@ async function loadMap() {
 mapScenarioSelect.addEventListener("change", changeMapScenario);
 mapSlider.addEventListener("input", drawMapYear);
 
-const mapModeSelect = document.querySelector("#map-view");
 const mapPair = document.querySelector("#map-pair");
 const lowMapHeading = document.querySelector("#low-map-heading");
 const highMapPanel = document.querySelector("#high-map-panel");
@@ -434,9 +433,9 @@ document.addEventListener("keydown", event => {
   if (event.key === "Escape") clearMapInspection();
 });
 
+// Retained for the regional chart integration; the map now always uses one view.
 function isComparingMaps() {
-  return mapModeSelect.value === "scenarios" &&
-    mapData?.has("ssp126") && mapData?.has("ssp585");
+  return false;
 }
 
 function syncMapMode() {
@@ -512,7 +511,6 @@ function drawSecondMap(year) {
   syncSecondMapRegions();
 }
 
-mapModeSelect.addEventListener("change", syncMapMode);
 loadMap();
 
 // Dumbbell chart: compare all five regional annual means at two selected years.
