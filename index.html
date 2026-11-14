@@ -61,6 +61,28 @@
       margin: 8px 0 0;
     }
 
+    .project-thesis {
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      font-weight: 600;
+    }
+
+    .climate-context {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid #dbe5df;
+      font-size: .95rem;
+      line-height: 1.75;
+    }
+
+    .climate-context p:last-child {
+      margin-bottom: 0;
+    }
+
+    .climate-context a {
+      color: #246953;
+      text-underline-offset: 3px;
+    }
+
     section> :last-child {
       margin-bottom: 0;
     }
@@ -125,14 +147,35 @@
     #warming-key {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px 16px;
+      gap: 7px;
+      margin: 10px 0 12px;
     }
 
     .key-item {
       display: inline-flex;
       align-items: center;
       gap: 7px;
+      padding: 7px 11px;
+      border: 1px solid #cbd8cf;
+      border-radius: 7px;
+      background: white;
+      color: var(--series-color, #465d54);
+      font: inherit;
+      line-height: 1.25;
+      cursor: pointer;
+      transition: background-color .15s, border-color .15s, opacity .15s;
     }
+
+    .key-item:hover { border-color: var(--series-color, #246953); background: #f2f6f3; }
+    .key-item.is-muted { opacity: .65; }
+    .key-item[aria-pressed="true"] {
+      background: var(--series-color, #246953);
+      border-color: var(--series-color, #246953);
+      color: white;
+      opacity: 1;
+    }
+    .key-item:focus-visible { outline: 2px solid #18352e; outline-offset: 3px; }
+    .key-item[aria-pressed="true"] .swatch { border-color: currentColor !important; }
 
     .swatch {
       width: 18px;
@@ -154,6 +197,93 @@
       border: 1px solid #899e94;
       border-radius: 6px;
     }
+
+    .dumbbell-panel {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #dbe5df;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin: 8px 0 0;
+      font-size: .875rem;
+    }
+
+    .range-labels output { font-weight: 600; font-variant-numeric: tabular-nums; }
+    .dual-range { position: relative; height: 34px; margin: 2px 0 10px; }
+    .dual-range-track {
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      top: 14px;
+      height: 6px;
+      border-radius: 4px;
+      background: linear-gradient(to right,
+        #dbe5df 0%, #dbe5df var(--range-start, 0%),
+        #246953 var(--range-start, 0%), #246953 var(--range-end, 100%),
+        #dbe5df var(--range-end, 100%), #dbe5df 100%);
+    }
+    .dual-range input[type="range"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      min-width: 0;
+      height: 34px;
+      margin: 0;
+      padding: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .dual-range input[type="range"]::-webkit-slider-runnable-track {
+      height: 6px;
+      background: transparent;
+    }
+    .dual-range input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      margin-top: -6px;
+      border: 2px solid #246953;
+      border-radius: 50%;
+      background: white;
+      pointer-events: auto;
+      cursor: ew-resize;
+      touch-action: none;
+    }
+    .dual-range input[type="range"]::-moz-range-track { height: 6px; background: transparent; }
+    .dual-range input[type="range"]::-moz-range-progress { background: transparent; }
+    .dual-range input[type="range"]::-moz-range-thumb {
+      box-sizing: border-box;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #246953;
+      border-radius: 50%;
+      background: white;
+      pointer-events: auto;
+      cursor: ew-resize;
+      touch-action: none;
+    }
+    #dumbbell-end::-webkit-slider-thumb { background: #246953; }
+    #dumbbell-end::-moz-range-thumb { background: #246953; }
+    .dual-range input[type="range"]:focus { z-index: 3; }
+    .dual-range input[type="range"]:focus-visible { outline: none; }
+    .dual-range input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid #a0bcb0; outline-offset: 3px; }
+    .dual-range input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid #a0bcb0; outline-offset: 3px; }
+    .dual-range:has(input:disabled) { opacity: .5; }
+    .endpoint-key { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    .endpoint-key span { display: inline-flex; align-items: center; gap: 6px; }
+    .endpoint-key i { display: inline-block; width: 11px; height: 11px; border: 2px solid #465d54; border-radius: 50%; }
+    .endpoint-key .end-dot { background: #465d54; }
+    #dumbbell-chart { touch-action: pan-y; }
 
     @media (min-width: 900px) {
       main {
@@ -198,6 +328,7 @@
   <main>
     <header>
       <h1>Different Futures</h1>
+      <p class="project-thesis">Global warming does not happen evenly.</p>
       <p>How does projected warming vary by region and emissions scenario?</p>
     </header>
 
@@ -206,6 +337,13 @@
       <p class="note">Absolute July surface air temperature (°C)</p>
 
       <div class="controls">
+        <div class="field">
+          <label for="map-view">Map view</label>
+          <select id="map-view">
+            <option value="regions">Single scenario</option>
+            <option value="scenarios">Compare scenarios</option>
+          </select>
+        </div>
         <div class="field">
           <label for="scenario-select">Scenario</label>
           <select id="scenario-select" disabled></select>
@@ -230,6 +368,20 @@
       </div>
       <svg id="legend" role="img" aria-label="Map temperature color scale"></svg>
       <p id="status" class="note"></p>
+      <aside class="climate-context" aria-label="The unequal costs of climate change">
+        <p>
+          Industrial emissions are concentrated in particular countries and regions,
+          yet the costs of climate change are felt worldwide. Some low-emitting
+          countries and communities, particularly in Africa and parts of Asia,
+          may face disproportionately severe impacts, including extreme heat,
+          water stress, food insecurity, and threats to their livelihoods.
+        </p>
+        <p class="note">
+          Source:
+          <a href="https://www.ipcc.ch/report/ar6/syr/summary-for-policymakers/"
+             target="_blank" rel="noopener noreferrer">IPCC AR6 Synthesis Report, Sections A.1–A.2</a>.
+        </p>
+      </aside>
       <div id="tooltip" hidden></div>
     </section>
 
@@ -237,31 +389,38 @@
       <h2 id="warming-heading">Regional warming</h2>
       <p class="note">Annual temperature change relative to 1995–2014 (°C)</p>
 
-      <div class="controls">
-        <div class="field">
-          <label for="warming-view">View</label>
-          <select id="warming-view">
-            <option value="regions">Compare regions</option>
-            <option value="scenarios">Compare scenarios</option>
-          </select>
-        </div>
-
-
-        <div class="field" id="warming-region-field" hidden>
-          <label for="warming-region">Region</label>
-          <select id="warming-region">
-            <option>Western North America</option>
-            <option>Europe</option>
-            <option>East Asia</option>
-          </select>
-        </div>
-      </div>
-
       <p id="warming-scenario-note" class="note" aria-live="polite"></p>
       <div id="warming-key" class="note"></div>
       <svg id="warming-chart" role="img" aria-label="Annual warming projections by year"></svg>
       <p id="warming-year" class="note" aria-live="polite"></p>
       <p id="warming-hover" class="note">Hover for annual values. Click a year to move the map.</p>
+      <div class="dumbbell-panel" aria-labelledby="dumbbell-heading">
+        <h3 id="dumbbell-heading">Five regions, two years</h3>
+        <p class="note">Regional annual temperature anomaly relative to 1995–2014 (°C).</p>
+        <div class="controls">
+          <div class="field">
+            <label for="dumbbell-scenario">Scenario</label>
+            <select id="dumbbell-scenario" disabled></select>
+          </div>
+        </div>
+        <div class="range-labels">
+          <span><label for="dumbbell-start">Start year</label> <output id="dumbbell-start-label" for="dumbbell-start">—</output></span>
+          <span><label for="dumbbell-end">End year</label> <output id="dumbbell-end-label" for="dumbbell-end">—</output></span>
+        </div>
+        <div id="dumbbell-range" class="dual-range">
+          <div class="dual-range-track" aria-hidden="true"></div>
+          <input id="dumbbell-start" type="range" min="0" max="0" step="1" value="0" disabled>
+          <input id="dumbbell-end" type="range" min="0" max="0" step="1" value="0" disabled>
+        </div>
+        <p class="endpoint-key note">
+          <span><i></i>Start year</span>
+          <span><i class="end-dot"></i>End year</span>
+          <span>Δ = end − start</span>
+        </p>
+        <svg id="dumbbell-chart" role="img" aria-label="Start and end year anomalies for five regions"></svg>
+        <p id="dumbbell-message" class="note" aria-live="polite">Loading annual regional data…</p>
+        <p class="note">The dashed 0°C line is the historical baseline. Negative anomalies appear to its left. Hover or focus a row for values.</p>
+      </div>
       <p class="note">
         CMIP6 ACCESS-CM2. Regional means use grid-cell area weights based on latitude.
         Annual means weight each month by its number of days. The outlined regions can include ocean cells.
