@@ -346,7 +346,10 @@ async function loadMap() {
       .on("click", inspectMapCell);
 
     mapData = d3.group(rows, row => row.scenario, row => row.year);
-    const scenarios = Array.from(mapData.keys()).sort();
+    const scenarios = Array.from(mapData.keys())
+      .filter(scenario => scenario !== "historical")
+      .sort();
+    if (!scenarios.length) throw new Error("No projection scenarios available.");
 
     d3.select(mapScenarioSelect)
       .selectAll("option")
@@ -531,7 +534,9 @@ async function initDumbbellChart() {
     message.textContent = `Could not load annual regional data: ${error.message}`;
     return;
   }
-  const scenarios = Array.from(new Set(rows.map(row => row.scenario))).sort();
+  const scenarios = Array.from(new Set(rows.map(row => row.scenario)))
+    .filter(scenario => scenario !== "historical")
+    .sort();
   d3.select(scenarioField).selectAll("option").data(scenarios).join("option")
     .attr("value", value => value).text(value => mapScenarioNames[value] ?? value);
   const scenarioControl = document.querySelector("#regional-scenario-field");
@@ -691,7 +696,7 @@ async function initDumbbellChart() {
     scenarioField.disabled = !comparing;
     if (!comparing && scenarios.includes(mapScenarioSelect.value)) {
       scenarioField.value = mapScenarioSelect.value;
-    } else if (comparing && scenarioField.value === "historical") {
+    } else if (comparing && !scenarios.includes(scenarioField.value)) {
       scenarioField.value = scenarios.includes("ssp585") ? "ssp585" : scenarios[0];
     }
     setScenario();
@@ -708,8 +713,6 @@ async function initDumbbellChart() {
           : `July ${year} is unavailable in the current map view.`;
     });
   }
-  d3.select(scenarioField).selectAll("option").filter(value => value === "historical")
-    .property("hidden", true).property("disabled", true);
   window.addEventListener("resize", render);
   syncRegionalScenario();
 }
