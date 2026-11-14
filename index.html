@@ -330,7 +330,7 @@
       <h1>Different Futures</h1>
       <p class="project-thesis">Global warming does not happen evenly.</p>
       <p>How does projected warming vary by region and emissions scenario?</p>
-      <p class="note">Try Compare scenarios at 2100, then inspect the same grid cell on both maps and <a href="#year-comparison">compare two years across regions</a>.</p>
+      <p class="note">Choose a scenario and year, inspect a grid cell, then <a href="#year-comparison">compare two years across regions</a>.</p>
     </header>
 
     <section aria-labelledby="map-heading">
@@ -338,13 +338,6 @@
       <p class="note">Absolute July surface air temperature (°C)</p>
 
       <div class="controls">
-        <div class="field">
-          <label for="map-view">Map view</label>
-          <select id="map-view">
-            <option value="regions">Single scenario</option>
-            <option value="scenarios">Compare scenarios</option>
-          </select>
-        </div>
         <div class="field">
           <label for="scenario-select">Scenario</label>
           <select id="scenario-select" disabled></select>
@@ -434,7 +427,7 @@
       <h2 id="about-heading">About this visualization</h2>
       <p>We wanted to find where projected warming is greatest and how the answer changes with the emissions pathway and the years we choose. The map shows the spatial pattern, the line chart shows year-to-year variation, and the two-year chart makes the size of the change easier to compare across five regions.</p>
       <h3>Design choices</h3>
-      <p>We started with one July map and a scenario dropdown. Switching back and forth made it hard to compare the same place, so the paired maps use the same year and temperature scale. Blue represents colder cells and orange and red represent warmer cells. The shared tooltip identifies the same grid cell on both maps and gives the exact difference in July temperature.</p>
+      <p>The July map uses a consistent temperature scale across years and scenarios. Blue represents colder cells and orange and red represent warmer cells. Hovering or tapping a grid cell reveals its location, year, and July temperature.</p>
       <p>We use lines to show annual variability and keep the projection scale fixed across pathways. Bill's checkpoint plots used two fixed 20-year averages. The current comparison gives readers two movable endpoints, with open and filled dots on the same horizontal scale. The connecting segment and signed difference show how much the annual regional temperature changed between those years. The shaded interval on the line chart puts that change in the context of the intervening years.</p>
       <h3>Data and calculations</h3>
       <p>We use CMIP6 ACCESS-CM2 near-surface air temperature (tas), simulation member r1i1p1f1. The maps show absolute July temperature in °C. The regional charts cover the historical simulation (1995–2014) and two projections (2015–2100). We combine grid cells within five fixed geographic boxes using latitude-based area weights. These boxes can include ocean cells. Annual means weight months by their number of days. We subtract each region's 1995–2014 mean annual temperature to calculate anomalies. The two-year chart subtracts the start anomaly from the end anomaly. Its tooltip also gives the mean of the annual anomalies available within that interval.</p>
