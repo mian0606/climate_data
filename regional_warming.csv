@@ -1,577 +1,961 @@
-"region","scenario","year","anomaly_c"
-"East Asia","ssp126","2015","0.387726"
-"East Asia","ssp126","2016","0.566008"
-"East Asia","ssp126","2017","0.708109"
-"East Asia","ssp126","2018","0.82947"
-"East Asia","ssp126","2019","0.456696"
-"East Asia","ssp126","2020","0.170311"
-"East Asia","ssp126","2021","0.624242"
-"East Asia","ssp126","2022","1.049858"
-"East Asia","ssp126","2023","0.86381"
-"East Asia","ssp126","2024","1.234363"
-"East Asia","ssp126","2025","1.003203"
-"East Asia","ssp126","2026","1.116282"
-"East Asia","ssp126","2027","1.470276"
-"East Asia","ssp126","2028","1.763807"
-"East Asia","ssp126","2029","1.319163"
-"East Asia","ssp126","2030","1.375994"
-"East Asia","ssp126","2031","1.586487"
-"East Asia","ssp126","2032","1.837166"
-"East Asia","ssp126","2033","1.758839"
-"East Asia","ssp126","2034","1.840086"
-"East Asia","ssp126","2035","1.937173"
-"East Asia","ssp126","2036","1.619824"
-"East Asia","ssp126","2037","1.492855"
-"East Asia","ssp126","2038","1.734706"
-"East Asia","ssp126","2039","1.630498"
-"East Asia","ssp126","2040","1.25708"
-"East Asia","ssp126","2041","1.158046"
-"East Asia","ssp126","2042","2.340566"
-"East Asia","ssp126","2043","2.134371"
-"East Asia","ssp126","2044","2.193831"
-"East Asia","ssp126","2045","1.997272"
-"East Asia","ssp126","2046","1.840605"
-"East Asia","ssp126","2047","2.400973"
-"East Asia","ssp126","2048","2.256082"
-"East Asia","ssp126","2049","1.972765"
-"East Asia","ssp126","2050","2.233113"
-"East Asia","ssp126","2051","1.277269"
-"East Asia","ssp126","2052","2.353554"
-"East Asia","ssp126","2053","2.230391"
-"East Asia","ssp126","2054","2.589249"
-"East Asia","ssp126","2055","2.306088"
-"East Asia","ssp126","2056","2.169981"
-"East Asia","ssp126","2057","2.526533"
-"East Asia","ssp126","2058","2.968179"
-"East Asia","ssp126","2059","2.055641"
-"East Asia","ssp126","2060","1.915911"
-"East Asia","ssp126","2061","2.076086"
-"East Asia","ssp126","2062","2.623972"
-"East Asia","ssp126","2063","2.242839"
-"East Asia","ssp126","2064","2.158191"
-"East Asia","ssp126","2065","2.118477"
-"East Asia","ssp126","2066","2.01599"
-"East Asia","ssp126","2067","2.251145"
-"East Asia","ssp126","2068","2.685334"
-"East Asia","ssp126","2069","2.691109"
-"East Asia","ssp126","2070","2.394975"
-"East Asia","ssp126","2071","2.301991"
-"East Asia","ssp126","2072","2.242725"
-"East Asia","ssp126","2073","2.429375"
-"East Asia","ssp126","2074","1.627852"
-"East Asia","ssp126","2075","2.233268"
-"East Asia","ssp126","2076","2.170861"
-"East Asia","ssp126","2077","2.082247"
-"East Asia","ssp126","2078","2.27325"
-"East Asia","ssp126","2079","2.50633"
-"East Asia","ssp126","2080","2.639562"
-"East Asia","ssp126","2081","2.535867"
-"East Asia","ssp126","2082","2.748852"
-"East Asia","ssp126","2083","2.089004"
-"East Asia","ssp126","2084","2.444579"
-"East Asia","ssp126","2085","2.299565"
-"East Asia","ssp126","2086","2.656642"
-"East Asia","ssp126","2087","3.003004"
-"East Asia","ssp126","2088","2.674307"
-"East Asia","ssp126","2089","2.529634"
-"East Asia","ssp126","2090","2.947029"
-"East Asia","ssp126","2091","2.260411"
-"East Asia","ssp126","2092","2.382106"
-"East Asia","ssp126","2093","2.312531"
-"East Asia","ssp126","2094","2.164847"
-"East Asia","ssp126","2095","2.937558"
-"East Asia","ssp126","2096","2.781149"
-"East Asia","ssp126","2097","2.201483"
-"East Asia","ssp126","2098","2.023243"
-"East Asia","ssp126","2099","2.346749"
-"East Asia","ssp126","2100","2.498819"
-"East Asia","ssp585","2015","0.843539"
-"East Asia","ssp585","2016","0.88074"
-"East Asia","ssp585","2017","0.740901"
-"East Asia","ssp585","2018","1.099923"
-"East Asia","ssp585","2019","0.743079"
-"East Asia","ssp585","2020","0.685452"
-"East Asia","ssp585","2021","0.93004"
-"East Asia","ssp585","2022","1.229356"
-"East Asia","ssp585","2023","0.659988"
-"East Asia","ssp585","2024","1.469193"
-"East Asia","ssp585","2025","1.317236"
-"East Asia","ssp585","2026","0.730964"
-"East Asia","ssp585","2027","1.101271"
-"East Asia","ssp585","2028","1.265219"
-"East Asia","ssp585","2029","1.454287"
-"East Asia","ssp585","2030","1.93496"
-"East Asia","ssp585","2031","1.624907"
-"East Asia","ssp585","2032","1.09547"
-"East Asia","ssp585","2033","1.166129"
-"East Asia","ssp585","2034","1.538025"
-"East Asia","ssp585","2035","1.300143"
-"East Asia","ssp585","2036","1.197017"
-"East Asia","ssp585","2037","2.134471"
-"East Asia","ssp585","2038","1.581116"
-"East Asia","ssp585","2039","1.857669"
-"East Asia","ssp585","2040","1.659321"
-"East Asia","ssp585","2041","2.163732"
-"East Asia","ssp585","2042","2.11115"
-"East Asia","ssp585","2043","2.154615"
-"East Asia","ssp585","2044","2.546988"
-"East Asia","ssp585","2045","2.592253"
-"East Asia","ssp585","2046","2.411697"
-"East Asia","ssp585","2047","1.914571"
-"East Asia","ssp585","2048","2.446581"
-"East Asia","ssp585","2049","2.850249"
-"East Asia","ssp585","2050","2.958897"
-"East Asia","ssp585","2051","2.999956"
-"East Asia","ssp585","2052","2.506421"
-"East Asia","ssp585","2053","2.982336"
-"East Asia","ssp585","2054","2.868953"
-"East Asia","ssp585","2055","3.499924"
-"East Asia","ssp585","2056","3.0341"
-"East Asia","ssp585","2057","3.057175"
-"East Asia","ssp585","2058","3.414593"
-"East Asia","ssp585","2059","3.020183"
-"East Asia","ssp585","2060","3.090674"
-"East Asia","ssp585","2061","3.447833"
-"East Asia","ssp585","2062","3.219866"
-"East Asia","ssp585","2063","3.533911"
-"East Asia","ssp585","2064","3.659204"
-"East Asia","ssp585","2065","3.807712"
-"East Asia","ssp585","2066","3.99263"
-"East Asia","ssp585","2067","4.573858"
-"East Asia","ssp585","2068","4.069585"
-"East Asia","ssp585","2069","4.18105"
-"East Asia","ssp585","2070","4.226889"
-"East Asia","ssp585","2071","4.57683"
-"East Asia","ssp585","2072","4.359792"
-"East Asia","ssp585","2073","5.010535"
-"East Asia","ssp585","2074","4.374823"
-"East Asia","ssp585","2075","5.055954"
-"East Asia","ssp585","2076","4.82314"
-"East Asia","ssp585","2077","4.731043"
-"East Asia","ssp585","2078","3.915844"
-"East Asia","ssp585","2079","4.930875"
-"East Asia","ssp585","2080","5.268858"
-"East Asia","ssp585","2081","4.541511"
-"East Asia","ssp585","2082","5.705986"
-"East Asia","ssp585","2083","5.386281"
-"East Asia","ssp585","2084","5.267406"
-"East Asia","ssp585","2085","5.530248"
-"East Asia","ssp585","2086","5.205698"
-"East Asia","ssp585","2087","5.97674"
-"East Asia","ssp585","2088","6.289918"
-"East Asia","ssp585","2089","5.637698"
-"East Asia","ssp585","2090","6.028529"
-"East Asia","ssp585","2091","6.633299"
-"East Asia","ssp585","2092","6.69156"
-"East Asia","ssp585","2093","6.147613"
-"East Asia","ssp585","2094","5.817244"
-"East Asia","ssp585","2095","6.915748"
-"East Asia","ssp585","2096","6.58877"
-"East Asia","ssp585","2097","6.297288"
-"East Asia","ssp585","2098","6.443959"
-"East Asia","ssp585","2099","6.554363"
-"East Asia","ssp585","2100","6.329921"
-"Europe","ssp126","2015","0.665209"
-"Europe","ssp126","2016","0.580151"
-"Europe","ssp126","2017","1.037805"
-"Europe","ssp126","2018","1.009565"
-"Europe","ssp126","2019","0.894201"
-"Europe","ssp126","2020","0.324977"
-"Europe","ssp126","2021","0.782921"
-"Europe","ssp126","2022","1.544186"
-"Europe","ssp126","2023","1.166675"
-"Europe","ssp126","2024","1.229537"
-"Europe","ssp126","2025","1.51458"
-"Europe","ssp126","2026","0.769551"
-"Europe","ssp126","2027","1.118129"
-"Europe","ssp126","2028","1.551721"
-"Europe","ssp126","2029","1.491022"
-"Europe","ssp126","2030","1.559816"
-"Europe","ssp126","2031","1.039462"
-"Europe","ssp126","2032","1.457332"
-"Europe","ssp126","2033","1.434538"
-"Europe","ssp126","2034","1.634081"
-"Europe","ssp126","2035","2.115289"
-"Europe","ssp126","2036","0.996525"
-"Europe","ssp126","2037","1.207791"
-"Europe","ssp126","2038","1.568115"
-"Europe","ssp126","2039","0.867647"
-"Europe","ssp126","2040","1.059285"
-"Europe","ssp126","2041","2.232896"
-"Europe","ssp126","2042","2.726521"
-"Europe","ssp126","2043","1.634321"
-"Europe","ssp126","2044","1.646699"
-"Europe","ssp126","2045","2.105745"
-"Europe","ssp126","2046","2.045509"
-"Europe","ssp126","2047","2.285289"
-"Europe","ssp126","2048","2.161015"
-"Europe","ssp126","2049","2.139896"
-"Europe","ssp126","2050","2.325245"
-"Europe","ssp126","2051","1.604207"
-"Europe","ssp126","2052","2.039582"
-"Europe","ssp126","2053","2.010642"
-"Europe","ssp126","2054","1.579857"
-"Europe","ssp126","2055","1.931537"
-"Europe","ssp126","2056","2.304762"
-"Europe","ssp126","2057","2.928907"
-"Europe","ssp126","2058","2.447235"
-"Europe","ssp126","2059","2.164732"
-"Europe","ssp126","2060","1.901222"
-"Europe","ssp126","2061","2.670892"
-"Europe","ssp126","2062","2.72672"
-"Europe","ssp126","2063","1.769795"
-"Europe","ssp126","2064","1.924298"
-"Europe","ssp126","2065","2.446372"
-"Europe","ssp126","2066","2.400863"
-"Europe","ssp126","2067","2.187467"
-"Europe","ssp126","2068","1.566645"
-"Europe","ssp126","2069","2.310132"
-"Europe","ssp126","2070","2.408967"
-"Europe","ssp126","2071","2.367735"
-"Europe","ssp126","2072","2.127871"
-"Europe","ssp126","2073","2.970976"
-"Europe","ssp126","2074","1.335179"
-"Europe","ssp126","2075","1.61416"
-"Europe","ssp126","2076","1.915379"
-"Europe","ssp126","2077","1.629706"
-"Europe","ssp126","2078","2.128199"
-"Europe","ssp126","2079","2.828435"
-"Europe","ssp126","2080","3.138745"
-"Europe","ssp126","2081","1.72069"
-"Europe","ssp126","2082","2.549446"
-"Europe","ssp126","2083","2.487735"
-"Europe","ssp126","2084","2.380998"
-"Europe","ssp126","2085","1.949807"
-"Europe","ssp126","2086","2.157957"
-"Europe","ssp126","2087","2.501635"
-"Europe","ssp126","2088","2.656212"
-"Europe","ssp126","2089","2.183837"
-"Europe","ssp126","2090","2.784864"
-"Europe","ssp126","2091","2.209066"
-"Europe","ssp126","2092","2.366366"
-"Europe","ssp126","2093","3.283165"
-"Europe","ssp126","2094","1.522782"
-"Europe","ssp126","2095","2.701623"
-"Europe","ssp126","2096","3.036294"
-"Europe","ssp126","2097","2.26131"
-"Europe","ssp126","2098","1.936317"
-"Europe","ssp126","2099","2.498236"
-"Europe","ssp126","2100","2.916679"
-"Europe","ssp585","2015","0.34725"
-"Europe","ssp585","2016","0.921632"
-"Europe","ssp585","2017","1.322968"
-"Europe","ssp585","2018","0.411748"
-"Europe","ssp585","2019","1.15296"
-"Europe","ssp585","2020","0.491819"
-"Europe","ssp585","2021","0.924963"
-"Europe","ssp585","2022","1.271822"
-"Europe","ssp585","2023","0.435426"
-"Europe","ssp585","2024","1.502075"
-"Europe","ssp585","2025","0.557416"
-"Europe","ssp585","2026","0.708851"
-"Europe","ssp585","2027","1.15277"
-"Europe","ssp585","2028","1.507598"
-"Europe","ssp585","2029","1.579308"
-"Europe","ssp585","2030","1.491293"
-"Europe","ssp585","2031","1.152918"
-"Europe","ssp585","2032","1.118846"
-"Europe","ssp585","2033","1.095326"
-"Europe","ssp585","2034","1.844245"
-"Europe","ssp585","2035","1.613741"
-"Europe","ssp585","2036","1.587901"
-"Europe","ssp585","2037","1.824311"
-"Europe","ssp585","2038","2.252908"
-"Europe","ssp585","2039","1.685166"
-"Europe","ssp585","2040","1.285719"
-"Europe","ssp585","2041","2.402382"
-"Europe","ssp585","2042","1.829518"
-"Europe","ssp585","2043","2.315491"
-"Europe","ssp585","2044","1.31631"
-"Europe","ssp585","2045","1.808476"
-"Europe","ssp585","2046","1.805664"
-"Europe","ssp585","2047","2.341481"
-"Europe","ssp585","2048","2.078483"
-"Europe","ssp585","2049","1.420291"
-"Europe","ssp585","2050","2.551945"
-"Europe","ssp585","2051","2.681179"
-"Europe","ssp585","2052","2.399742"
-"Europe","ssp585","2053","2.840504"
-"Europe","ssp585","2054","2.672955"
-"Europe","ssp585","2055","2.657675"
-"Europe","ssp585","2056","2.788396"
-"Europe","ssp585","2057","3.130994"
-"Europe","ssp585","2058","3.069765"
-"Europe","ssp585","2059","2.731411"
-"Europe","ssp585","2060","3.029995"
-"Europe","ssp585","2061","3.55771"
-"Europe","ssp585","2062","3.167999"
-"Europe","ssp585","2063","3.499441"
-"Europe","ssp585","2064","3.353469"
-"Europe","ssp585","2065","3.397762"
-"Europe","ssp585","2066","3.35183"
-"Europe","ssp585","2067","3.737165"
-"Europe","ssp585","2068","2.985766"
-"Europe","ssp585","2069","2.967281"
-"Europe","ssp585","2070","3.56121"
-"Europe","ssp585","2071","4.111801"
-"Europe","ssp585","2072","4.330028"
-"Europe","ssp585","2073","4.224361"
-"Europe","ssp585","2074","4.126012"
-"Europe","ssp585","2075","4.628216"
-"Europe","ssp585","2076","4.091446"
-"Europe","ssp585","2077","3.74422"
-"Europe","ssp585","2078","3.467436"
-"Europe","ssp585","2079","4.548252"
-"Europe","ssp585","2080","4.939248"
-"Europe","ssp585","2081","4.442779"
-"Europe","ssp585","2082","4.014059"
-"Europe","ssp585","2083","4.750006"
-"Europe","ssp585","2084","5.461867"
-"Europe","ssp585","2085","4.898147"
-"Europe","ssp585","2086","5.398686"
-"Europe","ssp585","2087","5.856916"
-"Europe","ssp585","2088","5.831297"
-"Europe","ssp585","2089","5.098957"
-"Europe","ssp585","2090","5.661464"
-"Europe","ssp585","2091","5.908954"
-"Europe","ssp585","2092","5.582692"
-"Europe","ssp585","2093","5.89959"
-"Europe","ssp585","2094","6.026948"
-"Europe","ssp585","2095","6.132411"
-"Europe","ssp585","2096","6.266369"
-"Europe","ssp585","2097","6.492353"
-"Europe","ssp585","2098","6.612197"
-"Europe","ssp585","2099","6.224867"
-"Europe","ssp585","2100","6.559841"
-"Western North America","ssp126","2015","0.753592"
-"Western North America","ssp126","2016","0.916211"
-"Western North America","ssp126","2017","0.637956"
-"Western North America","ssp126","2018","0.565499"
-"Western North America","ssp126","2019","0.444589"
-"Western North America","ssp126","2020","1.340028"
-"Western North America","ssp126","2021","0.58766"
-"Western North America","ssp126","2022","1.028643"
-"Western North America","ssp126","2023","0.985652"
-"Western North America","ssp126","2024","1.16088"
-"Western North America","ssp126","2025","1.470097"
-"Western North America","ssp126","2026","1.220129"
-"Western North America","ssp126","2027","1.21494"
-"Western North America","ssp126","2028","1.504729"
-"Western North America","ssp126","2029","1.928546"
-"Western North America","ssp126","2030","1.102755"
-"Western North America","ssp126","2031","0.861258"
-"Western North America","ssp126","2032","0.938191"
-"Western North America","ssp126","2033","1.038376"
-"Western North America","ssp126","2034","1.444365"
-"Western North America","ssp126","2035","1.341335"
-"Western North America","ssp126","2036","1.780192"
-"Western North America","ssp126","2037","1.210529"
-"Western North America","ssp126","2038","1.791176"
-"Western North America","ssp126","2039","1.830246"
-"Western North America","ssp126","2040","1.194044"
-"Western North America","ssp126","2041","1.635156"
-"Western North America","ssp126","2042","2.195769"
-"Western North America","ssp126","2043","1.545396"
-"Western North America","ssp126","2044","2.446848"
-"Western North America","ssp126","2045","2.153548"
-"Western North America","ssp126","2046","2.750879"
-"Western North America","ssp126","2047","2.489909"
-"Western North America","ssp126","2048","2.33307"
-"Western North America","ssp126","2049","2.115781"
-"Western North America","ssp126","2050","1.583842"
-"Western North America","ssp126","2051","2.252285"
-"Western North America","ssp126","2052","1.831068"
-"Western North America","ssp126","2053","2.598348"
-"Western North America","ssp126","2054","1.971966"
-"Western North America","ssp126","2055","2.206225"
-"Western North America","ssp126","2056","2.293154"
-"Western North America","ssp126","2057","2.513307"
-"Western North America","ssp126","2058","1.850299"
-"Western North America","ssp126","2059","2.704581"
-"Western North America","ssp126","2060","2.782718"
-"Western North America","ssp126","2061","2.857554"
-"Western North America","ssp126","2062","2.348327"
-"Western North America","ssp126","2063","2.627915"
-"Western North America","ssp126","2064","2.456315"
-"Western North America","ssp126","2065","2.144802"
-"Western North America","ssp126","2066","2.661024"
-"Western North America","ssp126","2067","2.505406"
-"Western North America","ssp126","2068","2.206433"
-"Western North America","ssp126","2069","2.38282"
-"Western North America","ssp126","2070","2.151539"
-"Western North America","ssp126","2071","2.541351"
-"Western North America","ssp126","2072","2.611303"
-"Western North America","ssp126","2073","2.848266"
-"Western North America","ssp126","2074","2.727733"
-"Western North America","ssp126","2075","2.633619"
-"Western North America","ssp126","2076","2.139225"
-"Western North America","ssp126","2077","2.843768"
-"Western North America","ssp126","2078","2.627348"
-"Western North America","ssp126","2079","2.576902"
-"Western North America","ssp126","2080","2.067145"
-"Western North America","ssp126","2081","2.773716"
-"Western North America","ssp126","2082","1.987675"
-"Western North America","ssp126","2083","2.768524"
-"Western North America","ssp126","2084","2.837955"
-"Western North America","ssp126","2085","2.704026"
-"Western North America","ssp126","2086","2.64713"
-"Western North America","ssp126","2087","1.893469"
-"Western North America","ssp126","2088","2.336786"
-"Western North America","ssp126","2089","2.657544"
-"Western North America","ssp126","2090","2.268413"
-"Western North America","ssp126","2091","2.653777"
-"Western North America","ssp126","2092","3.178043"
-"Western North America","ssp126","2093","2.834351"
-"Western North America","ssp126","2094","3.013546"
-"Western North America","ssp126","2095","2.251042"
-"Western North America","ssp126","2096","2.039169"
-"Western North America","ssp126","2097","3.080135"
-"Western North America","ssp126","2098","2.895511"
-"Western North America","ssp126","2099","3.12277"
-"Western North America","ssp126","2100","3.158011"
-"Western North America","ssp585","2015","0.566204"
-"Western North America","ssp585","2016","0.896203"
-"Western North America","ssp585","2017","1.092833"
-"Western North America","ssp585","2018","0.579407"
-"Western North America","ssp585","2019","1.257702"
-"Western North America","ssp585","2020","0.6506"
-"Western North America","ssp585","2021","0.881761"
-"Western North America","ssp585","2022","1.303984"
-"Western North America","ssp585","2023","1.054653"
-"Western North America","ssp585","2024","1.861275"
-"Western North America","ssp585","2025","0.861784"
-"Western North America","ssp585","2026","1.941138"
-"Western North America","ssp585","2027","1.561109"
-"Western North America","ssp585","2028","1.455546"
-"Western North America","ssp585","2029","1.184782"
-"Western North America","ssp585","2030","1.475374"
-"Western North America","ssp585","2031","1.459193"
-"Western North America","ssp585","2032","1.18463"
-"Western North America","ssp585","2033","1.47389"
-"Western North America","ssp585","2034","1.537307"
-"Western North America","ssp585","2035","2.160976"
-"Western North America","ssp585","2036","1.80303"
-"Western North America","ssp585","2037","1.881384"
-"Western North America","ssp585","2038","1.936403"
-"Western North America","ssp585","2039","1.897312"
-"Western North America","ssp585","2040","2.754234"
-"Western North America","ssp585","2041","1.655136"
-"Western North America","ssp585","2042","1.271513"
-"Western North America","ssp585","2043","2.75582"
-"Western North America","ssp585","2044","1.792743"
-"Western North America","ssp585","2045","2.043808"
-"Western North America","ssp585","2046","2.307844"
-"Western North America","ssp585","2047","2.270096"
-"Western North America","ssp585","2048","3.05691"
-"Western North America","ssp585","2049","3.006754"
-"Western North America","ssp585","2050","2.929265"
-"Western North America","ssp585","2051","2.118198"
-"Western North America","ssp585","2052","2.904644"
-"Western North America","ssp585","2053","2.991988"
-"Western North America","ssp585","2054","3.121954"
-"Western North America","ssp585","2055","2.987073"
-"Western North America","ssp585","2056","3.241359"
-"Western North America","ssp585","2057","3.141898"
-"Western North America","ssp585","2058","3.376542"
-"Western North America","ssp585","2059","3.106784"
-"Western North America","ssp585","2060","3.271051"
-"Western North America","ssp585","2061","4.145281"
-"Western North America","ssp585","2062","3.979849"
-"Western North America","ssp585","2063","4.155808"
-"Western North America","ssp585","2064","3.355137"
-"Western North America","ssp585","2065","4.280267"
-"Western North America","ssp585","2066","4.263331"
-"Western North America","ssp585","2067","4.022482"
-"Western North America","ssp585","2068","3.898735"
-"Western North America","ssp585","2069","4.569521"
-"Western North America","ssp585","2070","5.261357"
-"Western North America","ssp585","2071","4.336051"
-"Western North America","ssp585","2072","4.436294"
-"Western North America","ssp585","2073","4.636361"
-"Western North America","ssp585","2074","5.241519"
-"Western North America","ssp585","2075","5.208104"
-"Western North America","ssp585","2076","4.516845"
-"Western North America","ssp585","2077","4.513483"
-"Western North America","ssp585","2078","4.796735"
-"Western North America","ssp585","2079","5.054964"
-"Western North America","ssp585","2080","5.448839"
-"Western North America","ssp585","2081","5.186302"
-"Western North America","ssp585","2082","4.912026"
-"Western North America","ssp585","2083","5.058379"
-"Western North America","ssp585","2084","5.410086"
-"Western North America","ssp585","2085","5.087141"
-"Western North America","ssp585","2086","5.684222"
-"Western North America","ssp585","2087","5.700236"
-"Western North America","ssp585","2088","5.558964"
-"Western North America","ssp585","2089","5.705183"
-"Western North America","ssp585","2090","6.048081"
-"Western North America","ssp585","2091","5.939084"
-"Western North America","ssp585","2092","5.96308"
-"Western North America","ssp585","2093","6.438442"
-"Western North America","ssp585","2094","6.70058"
-"Western North America","ssp585","2095","6.289496"
-"Western North America","ssp585","2096","6.615813"
-"Western North America","ssp585","2097","7.50215"
-"Western North America","ssp585","2098","6.256169"
-"Western North America","ssp585","2099","7.088492"
-"Western North America","ssp585","2100","6.968409"
-"East Asia","historical","1995","-1.025259070764326"
-"East Asia","historical","1996","-0.72039956277019"
-"East Asia","historical","1997","-0.20693670729971103"
-"East Asia","historical","1998","-0.3632539860264199"
-"East Asia","historical","1999","-0.19537395133654734"
-"East Asia","historical","2000","0.09024830377676629"
-"East Asia","historical","2001","-0.6058651325827515"
-"East Asia","historical","2002","-0.25241986730209476"
-"East Asia","historical","2003","0.3240732000476836"
-"East Asia","historical","2004","-0.45946057601732626"
-"East Asia","historical","2005","-0.048908855249335303"
-"East Asia","historical","2006","0.41335198632088677"
-"East Asia","historical","2007","-0.5958782507660878"
-"East Asia","historical","2008","0.41526878644451237"
-"East Asia","historical","2009","0.5202478777956223"
-"East Asia","historical","2010","0.4222307580775837"
-"East Asia","historical","2011","0.5033618814958629"
-"East Asia","historical","2012","0.6291339167462713"
-"East Asia","historical","2013","0.6600688571538456"
-"East Asia","historical","2014","0.4957703922557659"
-"Europe","historical","1995","-0.594493204326703"
-"Europe","historical","1996","-0.33567739320327306"
-"Europe","historical","1997","0.05265115037259882"
-"Europe","historical","1998","-0.17440600150439245"
-"Europe","historical","1999","-0.3724331357650108"
-"Europe","historical","2000","0.27371212564336034"
-"Europe","historical","2001","-0.7352175343004443"
-"Europe","historical","2002","-0.07110581993228848"
-"Europe","historical","2003","-0.020184763422147256"
-"Europe","historical","2004","-0.185504380546762"
-"Europe","historical","2005","0.022031947849914246"
-"Europe","historical","2006","-0.16859443881446623"
-"Europe","historical","2007","-0.13080631406274534"
-"Europe","historical","2008","0.5567030364058088"
-"Europe","historical","2009","0.18438613976911178"
-"Europe","historical","2010","-0.03495730474542391"
-"Europe","historical","2011","0.2835382599200251"
-"Europe","historical","2012","0.5361599926017213"
-"Europe","historical","2013","0.3188549597937911"
-"Europe","historical","2014","0.5953426782673255"
-"Western North America","historical","1995","-0.8264168344030844"
-"Western North America","historical","1996","0.19057463736133862"
-"Western North America","historical","1997","-0.05450528233586116"
-"Western North America","historical","1998","0.03723192588279023"
-"Western North America","historical","1999","-0.510269328447241"
-"Western North America","historical","2000","-0.3020292837170633"
-"Western North America","historical","2001","-0.4796076068118902"
-"Western North America","historical","2002","-0.024640969063107754"
-"Western North America","historical","2003","0.4850540062645532"
-"Western North America","historical","2004","0.1185260877792862"
-"Western North America","historical","2005","-0.025516181827163642"
-"Western North America","historical","2006","-0.7331087296112253"
-"Western North America","historical","2007","-0.05920673802812626"
-"Western North America","historical","2008","-0.2992096131932591"
-"Western North America","historical","2009","0.21991422721921783"
-"Western North America","historical","2010","0.3260872853461967"
-"Western North America","historical","2011","0.8642177047033712"
-"Western North America","historical","2012","-0.1344269976928416"
-"Western North America","historical","2013","0.3269579776069724"
-"Western North America","historical","2014","0.8803737129671436"
+region,scenario,year,anomaly_c
+East Asia,ssp126,2015,0.387726
+East Asia,ssp126,2016,0.566008
+East Asia,ssp126,2017,0.708109
+East Asia,ssp126,2018,0.82947
+East Asia,ssp126,2019,0.456696
+East Asia,ssp126,2020,0.170311
+East Asia,ssp126,2021,0.624242
+East Asia,ssp126,2022,1.049858
+East Asia,ssp126,2023,0.86381
+East Asia,ssp126,2024,1.234363
+East Asia,ssp126,2025,1.003203
+East Asia,ssp126,2026,1.116282
+East Asia,ssp126,2027,1.470276
+East Asia,ssp126,2028,1.763807
+East Asia,ssp126,2029,1.319163
+East Asia,ssp126,2030,1.375994
+East Asia,ssp126,2031,1.586487
+East Asia,ssp126,2032,1.837166
+East Asia,ssp126,2033,1.758839
+East Asia,ssp126,2034,1.840086
+East Asia,ssp126,2035,1.937173
+East Asia,ssp126,2036,1.619824
+East Asia,ssp126,2037,1.492855
+East Asia,ssp126,2038,1.734706
+East Asia,ssp126,2039,1.630498
+East Asia,ssp126,2040,1.25708
+East Asia,ssp126,2041,1.158046
+East Asia,ssp126,2042,2.340566
+East Asia,ssp126,2043,2.134371
+East Asia,ssp126,2044,2.193831
+East Asia,ssp126,2045,1.997272
+East Asia,ssp126,2046,1.840605
+East Asia,ssp126,2047,2.400973
+East Asia,ssp126,2048,2.256082
+East Asia,ssp126,2049,1.972765
+East Asia,ssp126,2050,2.233113
+East Asia,ssp126,2051,1.277269
+East Asia,ssp126,2052,2.353554
+East Asia,ssp126,2053,2.230391
+East Asia,ssp126,2054,2.589249
+East Asia,ssp126,2055,2.306088
+East Asia,ssp126,2056,2.169981
+East Asia,ssp126,2057,2.526533
+East Asia,ssp126,2058,2.968179
+East Asia,ssp126,2059,2.055641
+East Asia,ssp126,2060,1.915911
+East Asia,ssp126,2061,2.076086
+East Asia,ssp126,2062,2.623972
+East Asia,ssp126,2063,2.242839
+East Asia,ssp126,2064,2.158191
+East Asia,ssp126,2065,2.118477
+East Asia,ssp126,2066,2.01599
+East Asia,ssp126,2067,2.251145
+East Asia,ssp126,2068,2.685334
+East Asia,ssp126,2069,2.691109
+East Asia,ssp126,2070,2.394975
+East Asia,ssp126,2071,2.301991
+East Asia,ssp126,2072,2.242725
+East Asia,ssp126,2073,2.429375
+East Asia,ssp126,2074,1.627852
+East Asia,ssp126,2075,2.233268
+East Asia,ssp126,2076,2.170861
+East Asia,ssp126,2077,2.082247
+East Asia,ssp126,2078,2.27325
+East Asia,ssp126,2079,2.50633
+East Asia,ssp126,2080,2.639562
+East Asia,ssp126,2081,2.535867
+East Asia,ssp126,2082,2.748852
+East Asia,ssp126,2083,2.089004
+East Asia,ssp126,2084,2.444579
+East Asia,ssp126,2085,2.299565
+East Asia,ssp126,2086,2.656642
+East Asia,ssp126,2087,3.003004
+East Asia,ssp126,2088,2.674307
+East Asia,ssp126,2089,2.529634
+East Asia,ssp126,2090,2.947029
+East Asia,ssp126,2091,2.260411
+East Asia,ssp126,2092,2.382106
+East Asia,ssp126,2093,2.312531
+East Asia,ssp126,2094,2.164847
+East Asia,ssp126,2095,2.937558
+East Asia,ssp126,2096,2.781149
+East Asia,ssp126,2097,2.201483
+East Asia,ssp126,2098,2.023243
+East Asia,ssp126,2099,2.346749
+East Asia,ssp126,2100,2.498819
+East Asia,ssp585,2015,0.843539
+East Asia,ssp585,2016,0.88074
+East Asia,ssp585,2017,0.740901
+East Asia,ssp585,2018,1.099923
+East Asia,ssp585,2019,0.743079
+East Asia,ssp585,2020,0.685452
+East Asia,ssp585,2021,0.93004
+East Asia,ssp585,2022,1.229356
+East Asia,ssp585,2023,0.659988
+East Asia,ssp585,2024,1.469193
+East Asia,ssp585,2025,1.317236
+East Asia,ssp585,2026,0.730964
+East Asia,ssp585,2027,1.101271
+East Asia,ssp585,2028,1.265219
+East Asia,ssp585,2029,1.454287
+East Asia,ssp585,2030,1.93496
+East Asia,ssp585,2031,1.624907
+East Asia,ssp585,2032,1.09547
+East Asia,ssp585,2033,1.166129
+East Asia,ssp585,2034,1.538025
+East Asia,ssp585,2035,1.300143
+East Asia,ssp585,2036,1.197017
+East Asia,ssp585,2037,2.134471
+East Asia,ssp585,2038,1.581116
+East Asia,ssp585,2039,1.857669
+East Asia,ssp585,2040,1.659321
+East Asia,ssp585,2041,2.163732
+East Asia,ssp585,2042,2.11115
+East Asia,ssp585,2043,2.154615
+East Asia,ssp585,2044,2.546988
+East Asia,ssp585,2045,2.592253
+East Asia,ssp585,2046,2.411697
+East Asia,ssp585,2047,1.914571
+East Asia,ssp585,2048,2.446581
+East Asia,ssp585,2049,2.850249
+East Asia,ssp585,2050,2.958897
+East Asia,ssp585,2051,2.999956
+East Asia,ssp585,2052,2.506421
+East Asia,ssp585,2053,2.982336
+East Asia,ssp585,2054,2.868953
+East Asia,ssp585,2055,3.499924
+East Asia,ssp585,2056,3.0341
+East Asia,ssp585,2057,3.057175
+East Asia,ssp585,2058,3.414593
+East Asia,ssp585,2059,3.020183
+East Asia,ssp585,2060,3.090674
+East Asia,ssp585,2061,3.447833
+East Asia,ssp585,2062,3.219866
+East Asia,ssp585,2063,3.533911
+East Asia,ssp585,2064,3.659204
+East Asia,ssp585,2065,3.807712
+East Asia,ssp585,2066,3.99263
+East Asia,ssp585,2067,4.573858
+East Asia,ssp585,2068,4.069585
+East Asia,ssp585,2069,4.18105
+East Asia,ssp585,2070,4.226889
+East Asia,ssp585,2071,4.57683
+East Asia,ssp585,2072,4.359792
+East Asia,ssp585,2073,5.010535
+East Asia,ssp585,2074,4.374823
+East Asia,ssp585,2075,5.055954
+East Asia,ssp585,2076,4.82314
+East Asia,ssp585,2077,4.731043
+East Asia,ssp585,2078,3.915844
+East Asia,ssp585,2079,4.930875
+East Asia,ssp585,2080,5.268858
+East Asia,ssp585,2081,4.541511
+East Asia,ssp585,2082,5.705986
+East Asia,ssp585,2083,5.386281
+East Asia,ssp585,2084,5.267406
+East Asia,ssp585,2085,5.530248
+East Asia,ssp585,2086,5.205698
+East Asia,ssp585,2087,5.97674
+East Asia,ssp585,2088,6.289918
+East Asia,ssp585,2089,5.637698
+East Asia,ssp585,2090,6.028529
+East Asia,ssp585,2091,6.633299
+East Asia,ssp585,2092,6.69156
+East Asia,ssp585,2093,6.147613
+East Asia,ssp585,2094,5.817244
+East Asia,ssp585,2095,6.915748
+East Asia,ssp585,2096,6.58877
+East Asia,ssp585,2097,6.297288
+East Asia,ssp585,2098,6.443959
+East Asia,ssp585,2099,6.554363
+East Asia,ssp585,2100,6.329921
+Europe,ssp126,2015,0.665209
+Europe,ssp126,2016,0.580151
+Europe,ssp126,2017,1.037805
+Europe,ssp126,2018,1.009565
+Europe,ssp126,2019,0.894201
+Europe,ssp126,2020,0.324977
+Europe,ssp126,2021,0.782921
+Europe,ssp126,2022,1.544186
+Europe,ssp126,2023,1.166675
+Europe,ssp126,2024,1.229537
+Europe,ssp126,2025,1.51458
+Europe,ssp126,2026,0.769551
+Europe,ssp126,2027,1.118129
+Europe,ssp126,2028,1.551721
+Europe,ssp126,2029,1.491022
+Europe,ssp126,2030,1.559816
+Europe,ssp126,2031,1.039462
+Europe,ssp126,2032,1.457332
+Europe,ssp126,2033,1.434538
+Europe,ssp126,2034,1.634081
+Europe,ssp126,2035,2.115289
+Europe,ssp126,2036,0.996525
+Europe,ssp126,2037,1.207791
+Europe,ssp126,2038,1.568115
+Europe,ssp126,2039,0.867647
+Europe,ssp126,2040,1.059285
+Europe,ssp126,2041,2.232896
+Europe,ssp126,2042,2.726521
+Europe,ssp126,2043,1.634321
+Europe,ssp126,2044,1.646699
+Europe,ssp126,2045,2.105745
+Europe,ssp126,2046,2.045509
+Europe,ssp126,2047,2.285289
+Europe,ssp126,2048,2.161015
+Europe,ssp126,2049,2.139896
+Europe,ssp126,2050,2.325245
+Europe,ssp126,2051,1.604207
+Europe,ssp126,2052,2.039582
+Europe,ssp126,2053,2.010642
+Europe,ssp126,2054,1.579857
+Europe,ssp126,2055,1.931537
+Europe,ssp126,2056,2.304762
+Europe,ssp126,2057,2.928907
+Europe,ssp126,2058,2.447235
+Europe,ssp126,2059,2.164732
+Europe,ssp126,2060,1.901222
+Europe,ssp126,2061,2.670892
+Europe,ssp126,2062,2.72672
+Europe,ssp126,2063,1.769795
+Europe,ssp126,2064,1.924298
+Europe,ssp126,2065,2.446372
+Europe,ssp126,2066,2.400863
+Europe,ssp126,2067,2.187467
+Europe,ssp126,2068,1.566645
+Europe,ssp126,2069,2.310132
+Europe,ssp126,2070,2.408967
+Europe,ssp126,2071,2.367735
+Europe,ssp126,2072,2.127871
+Europe,ssp126,2073,2.970976
+Europe,ssp126,2074,1.335179
+Europe,ssp126,2075,1.61416
+Europe,ssp126,2076,1.915379
+Europe,ssp126,2077,1.629706
+Europe,ssp126,2078,2.128199
+Europe,ssp126,2079,2.828435
+Europe,ssp126,2080,3.138745
+Europe,ssp126,2081,1.72069
+Europe,ssp126,2082,2.549446
+Europe,ssp126,2083,2.487735
+Europe,ssp126,2084,2.380998
+Europe,ssp126,2085,1.949807
+Europe,ssp126,2086,2.157957
+Europe,ssp126,2087,2.501635
+Europe,ssp126,2088,2.656212
+Europe,ssp126,2089,2.183837
+Europe,ssp126,2090,2.784864
+Europe,ssp126,2091,2.209066
+Europe,ssp126,2092,2.366366
+Europe,ssp126,2093,3.283165
+Europe,ssp126,2094,1.522782
+Europe,ssp126,2095,2.701623
+Europe,ssp126,2096,3.036294
+Europe,ssp126,2097,2.26131
+Europe,ssp126,2098,1.936317
+Europe,ssp126,2099,2.498236
+Europe,ssp126,2100,2.916679
+Europe,ssp585,2015,0.34725
+Europe,ssp585,2016,0.921632
+Europe,ssp585,2017,1.322968
+Europe,ssp585,2018,0.411748
+Europe,ssp585,2019,1.15296
+Europe,ssp585,2020,0.491819
+Europe,ssp585,2021,0.924963
+Europe,ssp585,2022,1.271822
+Europe,ssp585,2023,0.435426
+Europe,ssp585,2024,1.502075
+Europe,ssp585,2025,0.557416
+Europe,ssp585,2026,0.708851
+Europe,ssp585,2027,1.15277
+Europe,ssp585,2028,1.507598
+Europe,ssp585,2029,1.579308
+Europe,ssp585,2030,1.491293
+Europe,ssp585,2031,1.152918
+Europe,ssp585,2032,1.118846
+Europe,ssp585,2033,1.095326
+Europe,ssp585,2034,1.844245
+Europe,ssp585,2035,1.613741
+Europe,ssp585,2036,1.587901
+Europe,ssp585,2037,1.824311
+Europe,ssp585,2038,2.252908
+Europe,ssp585,2039,1.685166
+Europe,ssp585,2040,1.285719
+Europe,ssp585,2041,2.402382
+Europe,ssp585,2042,1.829518
+Europe,ssp585,2043,2.315491
+Europe,ssp585,2044,1.31631
+Europe,ssp585,2045,1.808476
+Europe,ssp585,2046,1.805664
+Europe,ssp585,2047,2.341481
+Europe,ssp585,2048,2.078483
+Europe,ssp585,2049,1.420291
+Europe,ssp585,2050,2.551945
+Europe,ssp585,2051,2.681179
+Europe,ssp585,2052,2.399742
+Europe,ssp585,2053,2.840504
+Europe,ssp585,2054,2.672955
+Europe,ssp585,2055,2.657675
+Europe,ssp585,2056,2.788396
+Europe,ssp585,2057,3.130994
+Europe,ssp585,2058,3.069765
+Europe,ssp585,2059,2.731411
+Europe,ssp585,2060,3.029995
+Europe,ssp585,2061,3.55771
+Europe,ssp585,2062,3.167999
+Europe,ssp585,2063,3.499441
+Europe,ssp585,2064,3.353469
+Europe,ssp585,2065,3.397762
+Europe,ssp585,2066,3.35183
+Europe,ssp585,2067,3.737165
+Europe,ssp585,2068,2.985766
+Europe,ssp585,2069,2.967281
+Europe,ssp585,2070,3.56121
+Europe,ssp585,2071,4.111801
+Europe,ssp585,2072,4.330028
+Europe,ssp585,2073,4.224361
+Europe,ssp585,2074,4.126012
+Europe,ssp585,2075,4.628216
+Europe,ssp585,2076,4.091446
+Europe,ssp585,2077,3.74422
+Europe,ssp585,2078,3.467436
+Europe,ssp585,2079,4.548252
+Europe,ssp585,2080,4.939248
+Europe,ssp585,2081,4.442779
+Europe,ssp585,2082,4.014059
+Europe,ssp585,2083,4.750006
+Europe,ssp585,2084,5.461867
+Europe,ssp585,2085,4.898147
+Europe,ssp585,2086,5.398686
+Europe,ssp585,2087,5.856916
+Europe,ssp585,2088,5.831297
+Europe,ssp585,2089,5.098957
+Europe,ssp585,2090,5.661464
+Europe,ssp585,2091,5.908954
+Europe,ssp585,2092,5.582692
+Europe,ssp585,2093,5.89959
+Europe,ssp585,2094,6.026948
+Europe,ssp585,2095,6.132411
+Europe,ssp585,2096,6.266369
+Europe,ssp585,2097,6.492353
+Europe,ssp585,2098,6.612197
+Europe,ssp585,2099,6.224867
+Europe,ssp585,2100,6.559841
+Western North America,ssp126,2015,0.753592
+Western North America,ssp126,2016,0.916211
+Western North America,ssp126,2017,0.637956
+Western North America,ssp126,2018,0.565499
+Western North America,ssp126,2019,0.444589
+Western North America,ssp126,2020,1.340028
+Western North America,ssp126,2021,0.58766
+Western North America,ssp126,2022,1.028643
+Western North America,ssp126,2023,0.985652
+Western North America,ssp126,2024,1.16088
+Western North America,ssp126,2025,1.470097
+Western North America,ssp126,2026,1.220129
+Western North America,ssp126,2027,1.21494
+Western North America,ssp126,2028,1.504729
+Western North America,ssp126,2029,1.928546
+Western North America,ssp126,2030,1.102755
+Western North America,ssp126,2031,0.861258
+Western North America,ssp126,2032,0.938191
+Western North America,ssp126,2033,1.038376
+Western North America,ssp126,2034,1.444365
+Western North America,ssp126,2035,1.341335
+Western North America,ssp126,2036,1.780192
+Western North America,ssp126,2037,1.210529
+Western North America,ssp126,2038,1.791176
+Western North America,ssp126,2039,1.830246
+Western North America,ssp126,2040,1.194044
+Western North America,ssp126,2041,1.635156
+Western North America,ssp126,2042,2.195769
+Western North America,ssp126,2043,1.545396
+Western North America,ssp126,2044,2.446848
+Western North America,ssp126,2045,2.153548
+Western North America,ssp126,2046,2.750879
+Western North America,ssp126,2047,2.489909
+Western North America,ssp126,2048,2.33307
+Western North America,ssp126,2049,2.115781
+Western North America,ssp126,2050,1.583842
+Western North America,ssp126,2051,2.252285
+Western North America,ssp126,2052,1.831068
+Western North America,ssp126,2053,2.598348
+Western North America,ssp126,2054,1.971966
+Western North America,ssp126,2055,2.206225
+Western North America,ssp126,2056,2.293154
+Western North America,ssp126,2057,2.513307
+Western North America,ssp126,2058,1.850299
+Western North America,ssp126,2059,2.704581
+Western North America,ssp126,2060,2.782718
+Western North America,ssp126,2061,2.857554
+Western North America,ssp126,2062,2.348327
+Western North America,ssp126,2063,2.627915
+Western North America,ssp126,2064,2.456315
+Western North America,ssp126,2065,2.144802
+Western North America,ssp126,2066,2.661024
+Western North America,ssp126,2067,2.505406
+Western North America,ssp126,2068,2.206433
+Western North America,ssp126,2069,2.38282
+Western North America,ssp126,2070,2.151539
+Western North America,ssp126,2071,2.541351
+Western North America,ssp126,2072,2.611303
+Western North America,ssp126,2073,2.848266
+Western North America,ssp126,2074,2.727733
+Western North America,ssp126,2075,2.633619
+Western North America,ssp126,2076,2.139225
+Western North America,ssp126,2077,2.843768
+Western North America,ssp126,2078,2.627348
+Western North America,ssp126,2079,2.576902
+Western North America,ssp126,2080,2.067145
+Western North America,ssp126,2081,2.773716
+Western North America,ssp126,2082,1.987675
+Western North America,ssp126,2083,2.768524
+Western North America,ssp126,2084,2.837955
+Western North America,ssp126,2085,2.704026
+Western North America,ssp126,2086,2.64713
+Western North America,ssp126,2087,1.893469
+Western North America,ssp126,2088,2.336786
+Western North America,ssp126,2089,2.657544
+Western North America,ssp126,2090,2.268413
+Western North America,ssp126,2091,2.653777
+Western North America,ssp126,2092,3.178043
+Western North America,ssp126,2093,2.834351
+Western North America,ssp126,2094,3.013546
+Western North America,ssp126,2095,2.251042
+Western North America,ssp126,2096,2.039169
+Western North America,ssp126,2097,3.080135
+Western North America,ssp126,2098,2.895511
+Western North America,ssp126,2099,3.12277
+Western North America,ssp126,2100,3.158011
+Western North America,ssp585,2015,0.566204
+Western North America,ssp585,2016,0.896203
+Western North America,ssp585,2017,1.092833
+Western North America,ssp585,2018,0.579407
+Western North America,ssp585,2019,1.257702
+Western North America,ssp585,2020,0.6506
+Western North America,ssp585,2021,0.881761
+Western North America,ssp585,2022,1.303984
+Western North America,ssp585,2023,1.054653
+Western North America,ssp585,2024,1.861275
+Western North America,ssp585,2025,0.861784
+Western North America,ssp585,2026,1.941138
+Western North America,ssp585,2027,1.561109
+Western North America,ssp585,2028,1.455546
+Western North America,ssp585,2029,1.184782
+Western North America,ssp585,2030,1.475374
+Western North America,ssp585,2031,1.459193
+Western North America,ssp585,2032,1.18463
+Western North America,ssp585,2033,1.47389
+Western North America,ssp585,2034,1.537307
+Western North America,ssp585,2035,2.160976
+Western North America,ssp585,2036,1.80303
+Western North America,ssp585,2037,1.881384
+Western North America,ssp585,2038,1.936403
+Western North America,ssp585,2039,1.897312
+Western North America,ssp585,2040,2.754234
+Western North America,ssp585,2041,1.655136
+Western North America,ssp585,2042,1.271513
+Western North America,ssp585,2043,2.75582
+Western North America,ssp585,2044,1.792743
+Western North America,ssp585,2045,2.043808
+Western North America,ssp585,2046,2.307844
+Western North America,ssp585,2047,2.270096
+Western North America,ssp585,2048,3.05691
+Western North America,ssp585,2049,3.006754
+Western North America,ssp585,2050,2.929265
+Western North America,ssp585,2051,2.118198
+Western North America,ssp585,2052,2.904644
+Western North America,ssp585,2053,2.991988
+Western North America,ssp585,2054,3.121954
+Western North America,ssp585,2055,2.987073
+Western North America,ssp585,2056,3.241359
+Western North America,ssp585,2057,3.141898
+Western North America,ssp585,2058,3.376542
+Western North America,ssp585,2059,3.106784
+Western North America,ssp585,2060,3.271051
+Western North America,ssp585,2061,4.145281
+Western North America,ssp585,2062,3.979849
+Western North America,ssp585,2063,4.155808
+Western North America,ssp585,2064,3.355137
+Western North America,ssp585,2065,4.280267
+Western North America,ssp585,2066,4.263331
+Western North America,ssp585,2067,4.022482
+Western North America,ssp585,2068,3.898735
+Western North America,ssp585,2069,4.569521
+Western North America,ssp585,2070,5.261357
+Western North America,ssp585,2071,4.336051
+Western North America,ssp585,2072,4.436294
+Western North America,ssp585,2073,4.636361
+Western North America,ssp585,2074,5.241519
+Western North America,ssp585,2075,5.208104
+Western North America,ssp585,2076,4.516845
+Western North America,ssp585,2077,4.513483
+Western North America,ssp585,2078,4.796735
+Western North America,ssp585,2079,5.054964
+Western North America,ssp585,2080,5.448839
+Western North America,ssp585,2081,5.186302
+Western North America,ssp585,2082,4.912026
+Western North America,ssp585,2083,5.058379
+Western North America,ssp585,2084,5.410086
+Western North America,ssp585,2085,5.087141
+Western North America,ssp585,2086,5.684222
+Western North America,ssp585,2087,5.700236
+Western North America,ssp585,2088,5.558964
+Western North America,ssp585,2089,5.705183
+Western North America,ssp585,2090,6.048081
+Western North America,ssp585,2091,5.939084
+Western North America,ssp585,2092,5.96308
+Western North America,ssp585,2093,6.438442
+Western North America,ssp585,2094,6.70058
+Western North America,ssp585,2095,6.289496
+Western North America,ssp585,2096,6.615813
+Western North America,ssp585,2097,7.50215
+Western North America,ssp585,2098,6.256169
+Western North America,ssp585,2099,7.088492
+Western North America,ssp585,2100,6.968409
+East Asia,historical,1995,-1.025259070764326
+East Asia,historical,1996,-0.72039956277019
+East Asia,historical,1997,-0.206936707299711
+East Asia,historical,1998,-0.3632539860264199
+East Asia,historical,1999,-0.1953739513365473
+East Asia,historical,2000,0.0902483037767662
+East Asia,historical,2001,-0.6058651325827515
+East Asia,historical,2002,-0.2524198673020947
+East Asia,historical,2003,0.3240732000476836
+East Asia,historical,2004,-0.4594605760173262
+East Asia,historical,2005,-0.0489088552493353
+East Asia,historical,2006,0.4133519863208867
+East Asia,historical,2007,-0.5958782507660878
+East Asia,historical,2008,0.4152687864445123
+East Asia,historical,2009,0.5202478777956223
+East Asia,historical,2010,0.4222307580775837
+East Asia,historical,2011,0.5033618814958629
+East Asia,historical,2012,0.6291339167462713
+East Asia,historical,2013,0.6600688571538456
+East Asia,historical,2014,0.4957703922557659
+Europe,historical,1995,-0.594493204326703
+Europe,historical,1996,-0.335677393203273
+Europe,historical,1997,0.0526511503725988
+Europe,historical,1998,-0.1744060015043924
+Europe,historical,1999,-0.3724331357650108
+Europe,historical,2000,0.2737121256433603
+Europe,historical,2001,-0.7352175343004443
+Europe,historical,2002,-0.0711058199322884
+Europe,historical,2003,-0.0201847634221472
+Europe,historical,2004,-0.185504380546762
+Europe,historical,2005,0.0220319478499142
+Europe,historical,2006,-0.1685944388144662
+Europe,historical,2007,-0.1308063140627453
+Europe,historical,2008,0.5567030364058088
+Europe,historical,2009,0.1843861397691117
+Europe,historical,2010,-0.0349573047454239
+Europe,historical,2011,0.2835382599200251
+Europe,historical,2012,0.5361599926017213
+Europe,historical,2013,0.3188549597937911
+Europe,historical,2014,0.5953426782673255
+Western North America,historical,1995,-0.8264168344030844
+Western North America,historical,1996,0.1905746373613386
+Western North America,historical,1997,-0.0545052823358611
+Western North America,historical,1998,0.0372319258827902
+Western North America,historical,1999,-0.510269328447241
+Western North America,historical,2000,-0.3020292837170633
+Western North America,historical,2001,-0.4796076068118902
+Western North America,historical,2002,-0.0246409690631077
+Western North America,historical,2003,0.4850540062645532
+Western North America,historical,2004,0.1185260877792862
+Western North America,historical,2005,-0.0255161818271636
+Western North America,historical,2006,-0.7331087296112253
+Western North America,historical,2007,-0.0592067380281262
+Western North America,historical,2008,-0.2992096131932591
+Western North America,historical,2009,0.2199142272192178
+Western North America,historical,2010,0.3260872853461967
+Western North America,historical,2011,0.8642177047033712
+Western North America,historical,2012,-0.1344269976928416
+Western North America,historical,2013,0.3269579776069724
+Western North America,historical,2014,0.8803737129671436
+West Asia,historical,1995,-0.564886605838236
+West Asia,historical,1996,-0.5332937575815997
+West Asia,historical,1997,-0.6316812022755727
+West Asia,historical,1998,0.0455524308253991
+West Asia,historical,1999,-0.1659507991575637
+West Asia,historical,2000,0.0494576880501149
+West Asia,historical,2001,-0.1889703945509815
+West Asia,historical,2002,-0.5284331499631563
+West Asia,historical,2003,0.1055035020350558
+West Asia,historical,2004,0.1737239478434915
+West Asia,historical,2005,-0.0328598630676211
+West Asia,historical,2006,0.2934564055104331
+West Asia,historical,2007,-0.1844521063105055
+West Asia,historical,2008,0.1783901577206421
+West Asia,historical,2009,-0.3536098982310136
+West Asia,historical,2010,-0.1406671948447915
+West Asia,historical,2011,0.709087569619296
+West Asia,historical,2012,1.165840659325884
+West Asia,historical,2013,0.0304509194140365
+West Asia,historical,2014,0.5733416914767027
+West–Central Africa,historical,1995,-0.2575735656558642
+West–Central Africa,historical,1996,-0.1505056482708582
+West–Central Africa,historical,1997,-0.6997049068185461
+West–Central Africa,historical,1998,-0.4448693053385568
+West–Central Africa,historical,1999,-0.1447495168735741
+West–Central Africa,historical,2000,0.1512006910322441
+West–Central Africa,historical,2001,0.3562173694958339
+West–Central Africa,historical,2002,-0.1184484014389113
+West–Central Africa,historical,2003,0.2031567318501324
+West–Central Africa,historical,2004,-0.0912499139453864
+West–Central Africa,historical,2005,-0.0605928664389523
+West–Central Africa,historical,2006,0.1416101508983764
+West–Central Africa,historical,2007,-0.2281527240332259
+West–Central Africa,historical,2008,-0.2610794715979736
+West–Central Africa,historical,2009,-0.183354934384571
+West–Central Africa,historical,2010,0.3698860207964536
+West–Central Africa,historical,2011,0.4469899154015628
+West–Central Africa,historical,2012,0.6883743645997953
+West–Central Africa,historical,2013,-0.0476125095653081
+West–Central Africa,historical,2014,0.330458520287376
+West Asia,ssp126,2015,0.949358345903299
+West Asia,ssp126,2016,0.8372424266019713
+West Asia,ssp126,2017,0.5509803619848945
+West Asia,ssp126,2018,0.1856592800967256
+West Asia,ssp126,2019,0.8004952457735861
+West Asia,ssp126,2020,0.5724568485592165
+West Asia,ssp126,2021,1.1832231897233072
+West Asia,ssp126,2022,0.4630539132329296
+West Asia,ssp126,2023,0.4306740550194021
+West Asia,ssp126,2024,1.4561236490250131
+West Asia,ssp126,2025,0.6359378865138723
+West Asia,ssp126,2026,1.4560859917902782
+West Asia,ssp126,2027,1.2658608027961726
+West Asia,ssp126,2028,1.405170384923785
+West Asia,ssp126,2029,0.7639244620331915
+West Asia,ssp126,2030,2.0083399666817456
+West Asia,ssp126,2031,1.2524302555655176
+West Asia,ssp126,2032,0.8315138927479566
+West Asia,ssp126,2033,1.9463609816510363
+West Asia,ssp126,2034,1.3475497096980078
+West Asia,ssp126,2035,1.9740762697760597
+West Asia,ssp126,2036,1.366256670165498
+West Asia,ssp126,2037,1.6027741209017208
+West Asia,ssp126,2038,1.7117265260053005
+West Asia,ssp126,2039,1.3318699282581754
+West Asia,ssp126,2040,1.748117687606321
+West Asia,ssp126,2041,1.1416383133352106
+West Asia,ssp126,2042,1.6323161281814578
+West Asia,ssp126,2043,1.6497748196001325
+West Asia,ssp126,2044,1.834985052128257
+West Asia,ssp126,2045,2.150778525791239
+West Asia,ssp126,2046,2.1982680979659968
+West Asia,ssp126,2047,1.914878128392825
+West Asia,ssp126,2048,2.662977062535976
+West Asia,ssp126,2049,1.688379748915391
+West Asia,ssp126,2050,2.3610352703472905
+West Asia,ssp126,2051,1.8512536449345875
+West Asia,ssp126,2052,2.455072613263077
+West Asia,ssp126,2053,2.3397570081261527
+West Asia,ssp126,2054,2.5501894688242075
+West Asia,ssp126,2055,2.0528188439645696
+West Asia,ssp126,2056,2.260751448275005
+West Asia,ssp126,2057,2.2339543443092182
+West Asia,ssp126,2058,2.4704116491550963
+West Asia,ssp126,2059,2.137930373790841
+West Asia,ssp126,2060,2.207925310504372
+West Asia,ssp126,2061,1.919885575282688
+West Asia,ssp126,2062,2.308535048333592
+West Asia,ssp126,2063,2.550431030824555
+West Asia,ssp126,2064,2.548802485352425
+West Asia,ssp126,2065,1.9013899834480557
+West Asia,ssp126,2066,2.4820767998091497
+West Asia,ssp126,2067,2.8726850325958893
+West Asia,ssp126,2068,2.804837363727554
+West Asia,ssp126,2069,2.2834668260603053
+West Asia,ssp126,2070,2.3684978186741894
+West Asia,ssp126,2071,2.0475040332578835
+West Asia,ssp126,2072,2.009207608538386
+West Asia,ssp126,2073,1.9227055561864117
+West Asia,ssp126,2074,2.0022329289353955
+West Asia,ssp126,2075,2.2102818285011026
+West Asia,ssp126,2076,1.8361491254847024
+West Asia,ssp126,2077,1.9668838806134128
+West Asia,ssp126,2078,2.4089793142707308
+West Asia,ssp126,2079,2.150667366973874
+West Asia,ssp126,2080,2.2306762166418075
+West Asia,ssp126,2081,2.482081019418405
+West Asia,ssp126,2082,2.583461347363375
+West Asia,ssp126,2083,1.890299616116227
+West Asia,ssp126,2084,2.172569259353377
+West Asia,ssp126,2085,2.394785107759386
+West Asia,ssp126,2086,2.660329140057325
+West Asia,ssp126,2087,2.675208720332332
+West Asia,ssp126,2088,2.084769642690258
+West Asia,ssp126,2089,1.8344157775489516
+West Asia,ssp126,2090,2.0616410062216843
+West Asia,ssp126,2091,2.3689433240204067
+West Asia,ssp126,2092,2.011575880565932
+West Asia,ssp126,2093,2.159488588913636
+West Asia,ssp126,2094,2.20473153469025
+West Asia,ssp126,2095,2.204968471128325
+West Asia,ssp126,2096,1.9557427918140888
+West Asia,ssp126,2097,1.760217901473336
+West Asia,ssp126,2098,2.3555983629062816
+West Asia,ssp126,2099,1.851866265700444
+West Asia,ssp126,2100,2.2674962044666884
+West–Central Africa,ssp126,2015,0.3520868470412139
+West–Central Africa,ssp126,2016,0.4827526219633924
+West–Central Africa,ssp126,2017,0.4287826137852448
+West–Central Africa,ssp126,2018,0.2618492986334431
+West–Central Africa,ssp126,2019,0.8967692620672949
+West–Central Africa,ssp126,2020,0.6274534854671572
+West–Central Africa,ssp126,2021,0.672818989771784
+West–Central Africa,ssp126,2022,0.4807921574896951
+West–Central Africa,ssp126,2023,0.764487731806998
+West–Central Africa,ssp126,2024,1.4726635134308594
+West–Central Africa,ssp126,2025,0.9574299136021622
+West–Central Africa,ssp126,2026,0.9333966884042084
+West–Central Africa,ssp126,2027,1.155507334386197
+West–Central Africa,ssp126,2028,1.3379662685926768
+West–Central Africa,ssp126,2029,1.184386982169375
+West–Central Africa,ssp126,2030,1.4122371654597003
+West–Central Africa,ssp126,2031,1.2592769730978937
+West–Central Africa,ssp126,2032,1.0666503169058998
+West–Central Africa,ssp126,2033,1.0780669754632335
+West–Central Africa,ssp126,2034,0.911147777173806
+West–Central Africa,ssp126,2035,1.2082329004344956
+West–Central Africa,ssp126,2036,1.188235018893561
+West–Central Africa,ssp126,2037,1.5858049169046282
+West–Central Africa,ssp126,2038,1.4419519247765322
+West–Central Africa,ssp126,2039,1.4552005629519726
+West–Central Africa,ssp126,2040,1.6002579243554005
+West–Central Africa,ssp126,2041,1.185026584933702
+West–Central Africa,ssp126,2042,1.2637893270858704
+West–Central Africa,ssp126,2043,1.9292916973346264
+West–Central Africa,ssp126,2044,1.595263332536284
+West–Central Africa,ssp126,2045,1.6400699129819645
+West–Central Africa,ssp126,2046,1.453023380523149
+West–Central Africa,ssp126,2047,1.569986880642844
+West–Central Africa,ssp126,2048,1.9927044092365984
+West–Central Africa,ssp126,2049,1.7911266681927067
+West–Central Africa,ssp126,2050,1.4537222574826458
+West–Central Africa,ssp126,2051,1.8504599701430529
+West–Central Africa,ssp126,2052,2.0248146808656173
+West–Central Africa,ssp126,2053,2.145192791507135
+West–Central Africa,ssp126,2054,2.295728665079679
+West–Central Africa,ssp126,2055,1.5630282856756177
+West–Central Africa,ssp126,2056,2.37362125316648
+West–Central Africa,ssp126,2057,1.7211097768700192
+West–Central Africa,ssp126,2058,1.886663270098218
+West–Central Africa,ssp126,2059,1.8910004543954104
+West–Central Africa,ssp126,2060,2.064785989994519
+West–Central Africa,ssp126,2061,1.843501151259396
+West–Central Africa,ssp126,2062,2.075682362815272
+West–Central Africa,ssp126,2063,2.4830276454362696
+West–Central Africa,ssp126,2064,2.4331995265675346
+West–Central Africa,ssp126,2065,1.7578561318950463
+West–Central Africa,ssp126,2066,1.9299158955467772
+West–Central Africa,ssp126,2067,2.466241334931915
+West–Central Africa,ssp126,2068,2.239491342744902
+West–Central Africa,ssp126,2069,1.5977820616483385
+West–Central Africa,ssp126,2070,2.007639056291172
+West–Central Africa,ssp126,2071,2.2942938057686604
+West–Central Africa,ssp126,2072,1.4159381461606095
+West–Central Africa,ssp126,2073,1.765262025985976
+West–Central Africa,ssp126,2074,1.9245453719058965
+West–Central Africa,ssp126,2075,1.8450243221915412
+West–Central Africa,ssp126,2076,1.73408740866709
+West–Central Africa,ssp126,2077,1.7515824601766
+West–Central Africa,ssp126,2078,2.069532229574463
+West–Central Africa,ssp126,2079,2.2467024858421283
+West–Central Africa,ssp126,2080,1.568214171571462
+West–Central Africa,ssp126,2081,1.816116074748564
+West–Central Africa,ssp126,2082,2.092569628150436
+West–Central Africa,ssp126,2083,1.8080905698748355
+West–Central Africa,ssp126,2084,2.0685755489913404
+West–Central Africa,ssp126,2085,1.763838395229271
+West–Central Africa,ssp126,2086,1.9237888923986723
+West–Central Africa,ssp126,2087,2.236818934977886
+West–Central Africa,ssp126,2088,2.042062649259865
+West–Central Africa,ssp126,2089,1.8493123625699963
+West–Central Africa,ssp126,2090,2.0906997819216926
+West–Central Africa,ssp126,2091,1.8731318178223688
+West–Central Africa,ssp126,2092,2.161847698177308
+West–Central Africa,ssp126,2093,2.0829298062258523
+West–Central Africa,ssp126,2094,2.108638197668114
+West–Central Africa,ssp126,2095,2.280533167633486
+West–Central Africa,ssp126,2096,1.999255744357825
+West–Central Africa,ssp126,2097,1.6689305850897185
+West–Central Africa,ssp126,2098,1.850572076136061
+West–Central Africa,ssp126,2099,1.6385888897506824
+West–Central Africa,ssp126,2100,1.9630110547109965
+West Asia,ssp585,2015,0.7132249923278629
+West Asia,ssp585,2016,0.9165637623180238
+West Asia,ssp585,2017,0.4351660185861874
+West Asia,ssp585,2018,0.7702657578935757
+West Asia,ssp585,2019,1.297158241182089
+West Asia,ssp585,2020,0.8322441352309653
+West Asia,ssp585,2021,1.517332615911922
+West Asia,ssp585,2022,0.7309405796873385
+West Asia,ssp585,2023,1.8064663829480985
+West Asia,ssp585,2024,0.5884957138406968
+West Asia,ssp585,2025,0.5323654424491693
+West Asia,ssp585,2026,0.8278687838879932
+West Asia,ssp585,2027,1.6016931729076198
+West Asia,ssp585,2028,1.0281952503782072
+West Asia,ssp585,2029,0.990961338630072
+West Asia,ssp585,2030,1.082060441387256
+West Asia,ssp585,2031,1.5243669899285557
+West Asia,ssp585,2032,1.3014603082419285
+West Asia,ssp585,2033,1.4666342789018216
+West Asia,ssp585,2034,1.412335503272164
+West Asia,ssp585,2035,1.5292002981902826
+West Asia,ssp585,2036,1.1423812848819743
+West Asia,ssp585,2037,1.6248384532119715
+West Asia,ssp585,2038,2.0924054553507148
+West Asia,ssp585,2039,1.5714333211709215
+West Asia,ssp585,2040,1.7884613496953785
+West Asia,ssp585,2041,2.217786623187127
+West Asia,ssp585,2042,2.040808575065217
+West Asia,ssp585,2043,2.329234835740955
+West Asia,ssp585,2044,1.863638966639062
+West Asia,ssp585,2045,2.665941749246912
+West Asia,ssp585,2046,2.684807846378309
+West Asia,ssp585,2047,2.133566525828272
+West Asia,ssp585,2048,1.982450378209688
+West Asia,ssp585,2049,3.0146498710996
+West Asia,ssp585,2050,2.724048919493523
+West Asia,ssp585,2051,2.8670178929671515
+West Asia,ssp585,2052,2.53522332236599
+West Asia,ssp585,2053,2.8581176557213617
+West Asia,ssp585,2054,3.14252003745872
+West Asia,ssp585,2055,2.616517161612091
+West Asia,ssp585,2056,2.829607529631861
+West Asia,ssp585,2057,2.887235939365123
+West Asia,ssp585,2058,3.2210929090768445
+West Asia,ssp585,2059,3.531813169972718
+West Asia,ssp585,2060,3.274093911562794
+West Asia,ssp585,2061,3.8587844021562177
+West Asia,ssp585,2062,3.419629320809147
+West Asia,ssp585,2063,3.4745182472262783
+West Asia,ssp585,2064,3.583549606577467
+West Asia,ssp585,2065,3.434456211412773
+West Asia,ssp585,2066,3.293650920509407
+West Asia,ssp585,2067,4.165824937023441
+West Asia,ssp585,2068,3.754696080656686
+West Asia,ssp585,2069,4.594063885213963
+West Asia,ssp585,2070,4.039773331097546
+West Asia,ssp585,2071,4.509467530722294
+West Asia,ssp585,2072,4.045027812469883
+West Asia,ssp585,2073,4.264846120175719
+West Asia,ssp585,2074,4.431128545807621
+West Asia,ssp585,2075,4.843483898679914
+West Asia,ssp585,2076,4.974804560510691
+West Asia,ssp585,2077,4.734126138833339
+West Asia,ssp585,2078,4.579836157859951
+West Asia,ssp585,2079,4.293945643845454
+West Asia,ssp585,2080,5.100262226584665
+West Asia,ssp585,2081,4.95517743322706
+West Asia,ssp585,2082,5.366248062424809
+West Asia,ssp585,2083,4.797065516211379
+West Asia,ssp585,2084,5.4004702301563725
+West Asia,ssp585,2085,5.3717936032592455
+West Asia,ssp585,2086,5.58183909537717
+West Asia,ssp585,2087,5.457080576731567
+West Asia,ssp585,2088,5.351218279522534
+West Asia,ssp585,2089,5.206080559841837
+West Asia,ssp585,2090,5.541816293807671
+West Asia,ssp585,2091,6.142221547429386
+West Asia,ssp585,2092,6.605843514794714
+West Asia,ssp585,2093,6.339290920670422
+West Asia,ssp585,2094,6.227338333648749
+West Asia,ssp585,2095,6.588754198505601
+West Asia,ssp585,2096,6.842990893290658
+West Asia,ssp585,2097,6.599241411170734
+West Asia,ssp585,2098,6.529105170922275
+West Asia,ssp585,2099,6.955541949743985
+West Asia,ssp585,2100,6.858178935869436
+West–Central Africa,ssp585,2015,0.7651578763285514
+West–Central Africa,ssp585,2016,0.7022253894785777
+West–Central Africa,ssp585,2017,0.2479164255497963
+West–Central Africa,ssp585,2018,0.6524442107434467
+West–Central Africa,ssp585,2019,1.008191496492099
+West–Central Africa,ssp585,2020,0.9721194157311608
+West–Central Africa,ssp585,2021,1.300645995945171
+West–Central Africa,ssp585,2022,0.5681956540768596
+West–Central Africa,ssp585,2023,1.606314607036925
+West–Central Africa,ssp585,2024,0.4558035793664388
+West–Central Africa,ssp585,2025,0.9974620093846768
+West–Central Africa,ssp585,2026,0.7606613159216344
+West–Central Africa,ssp585,2027,1.2801571936845448
+West–Central Africa,ssp585,2028,1.2914561115249406
+West–Central Africa,ssp585,2029,0.8731129641132682
+West–Central Africa,ssp585,2030,0.616438295603178
+West–Central Africa,ssp585,2031,1.2567557527700473
+West–Central Africa,ssp585,2032,0.8872394388061622
+West–Central Africa,ssp585,2033,1.1211199979957236
+West–Central Africa,ssp585,2034,1.204556241842063
+West–Central Africa,ssp585,2035,1.2791962906603942
+West–Central Africa,ssp585,2036,1.219416664504763
+West–Central Africa,ssp585,2037,1.7861533465935686
+West–Central Africa,ssp585,2038,1.323572432831412
+West–Central Africa,ssp585,2039,1.2237124112049855
+West–Central Africa,ssp585,2040,1.7166263882813837
+West–Central Africa,ssp585,2041,1.6217942826639735
+West–Central Africa,ssp585,2042,1.3239080548721454
+West–Central Africa,ssp585,2043,1.7585522410914507
+West–Central Africa,ssp585,2044,2.0456205438501485
+West–Central Africa,ssp585,2045,2.0145064609589767
+West–Central Africa,ssp585,2046,1.8841895705646865
+West–Central Africa,ssp585,2047,1.7647386472297804
+West–Central Africa,ssp585,2048,1.881218043405671
+West–Central Africa,ssp585,2049,2.248824961289369
+West–Central Africa,ssp585,2050,2.4312059603720897
+West–Central Africa,ssp585,2051,1.7892034744068113
+West–Central Africa,ssp585,2052,2.5198467142477803
+West–Central Africa,ssp585,2053,3.11471863071148
+West–Central Africa,ssp585,2054,2.638807311607934
+West–Central Africa,ssp585,2055,2.2900385616506327
+West–Central Africa,ssp585,2056,2.65970178842106
+West–Central Africa,ssp585,2057,2.5645529483699683
+West–Central Africa,ssp585,2058,3.3362205216287717
+West–Central Africa,ssp585,2059,3.111128000150416
+West–Central Africa,ssp585,2060,2.917363475107159
+West–Central Africa,ssp585,2061,3.1968189801670555
+West–Central Africa,ssp585,2062,3.08545911077643
+West–Central Africa,ssp585,2063,3.1766110122038675
+West–Central Africa,ssp585,2064,3.42427794121846
+West–Central Africa,ssp585,2065,2.6841753037141025
+West–Central Africa,ssp585,2066,3.018447840683628
+West–Central Africa,ssp585,2067,3.631167344429876
+West–Central Africa,ssp585,2068,3.345559639022099
+West–Central Africa,ssp585,2069,3.9155553090067095
+West–Central Africa,ssp585,2070,3.950202429237436
+West–Central Africa,ssp585,2071,4.360959691466452
+West–Central Africa,ssp585,2072,3.785124645225008
+West–Central Africa,ssp585,2073,3.751745481335785
+West–Central Africa,ssp585,2074,4.061424823340911
+West–Central Africa,ssp585,2075,4.014580714021491
+West–Central Africa,ssp585,2076,4.336805001265908
+West–Central Africa,ssp585,2077,4.123288265481623
+West–Central Africa,ssp585,2078,4.193156955968284
+West–Central Africa,ssp585,2079,4.274662091073363
+West–Central Africa,ssp585,2080,4.666997511670793
+West–Central Africa,ssp585,2081,4.462106505691537
+West–Central Africa,ssp585,2082,5.114110885928461
+West–Central Africa,ssp585,2083,4.479759521462455
+West–Central Africa,ssp585,2084,5.414055513331228
+West–Central Africa,ssp585,2085,5.0981727501056255
+West–Central Africa,ssp585,2086,5.099733850757943
+West–Central Africa,ssp585,2087,5.215223769090009
+West–Central Africa,ssp585,2088,4.9419866147972655
+West–Central Africa,ssp585,2089,4.857627413880053
+West–Central Africa,ssp585,2090,5.186306058534299
+West–Central Africa,ssp585,2091,5.352179365766723
+West–Central Africa,ssp585,2092,5.583316037793075
+West–Central Africa,ssp585,2093,5.485318277413398
+West–Central Africa,ssp585,2094,6.307674841564243
+West–Central Africa,ssp585,2095,6.263243381507436
+West–Central Africa,ssp585,2096,6.300677647922861
+West–Central Africa,ssp585,2097,5.807384074156261
+West–Central Africa,ssp585,2098,6.85024682469227
+West–Central Africa,ssp585,2099,6.675691051128098
+West–Central Africa,ssp585,2100,6.753122037737846
