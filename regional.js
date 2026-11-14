@@ -1,3 +1,227 @@
+(async function () {
+    const regions = climateRegions;
+
+    const scenarioNote = document.querySelector("#warming-scenario-note");
+    const yearNote = document.querySelector("#warming-year");
+    const hoverNote = document.querySelector("#warming-hover");
+    const key = d3.select("#warming-key");
+    const chart = d3.select("#warming-chart");
+    const chartNode = chart.node();
+    const hoverHint = "Hover for annual values. Click a year to move the map.";
+
+    let rows;
+    try {
+        rows = await loadRegionalWarming();
+
+        if (!rows.length) throw new Error("No valid regional warming data.");
+    } catch (error) {
+        console.error(error);
+        yearNote.textContent = "Could not load regional_warming.csv.";
+        return;
+    }
+
+    const projectionRows = rows.filter(row => row.scenario !== "historical");
+    const yDomain = [
+        Math.min(0, d3.min(projectionRows, row => row.warming)),
+        d3.max(projectionRows, row => row.warming)
+    ];
+    const formatValue = d3.format("+.2f");
+    let highlightedRegion = null;
+
+    const warmingTooltip = d3.select("body").append("div")
+        .attr("aria-hidden", "true")
+        .property("hidden", true)
+        .style("position", "fixed")
+        .style("z-index", "3")
+        .style("pointer-events", "none")
+        .style("max-width", "calc(100vw - 16px)")
+        .style("padding", "8px 12px")
+        .style("background", "#18352e")
+        .style("color", "white")
+        .style("border-radius", "8px")
+        .style("font-size", "0.875rem")
+        .style("white-space", "pre-line")
+        .style("box-shadow", "0 4px 14px #0002");
+
+    let updateHighlight = () => {};
+    let updateInterval = () => {};
+    let renderedScenario;
+
+    function draw() {
+        updateHighlight = updateInterval = () => {};
+        warmingTooltip.property("hidden", true);
+        const activeScenario = isComparingMaps()
+            ? (regionalComparison?.scenario ?? "ssp585")
+            : mapScenarioSelect.value;
+        renderedScenario = activeScenario;
+        const historicalMode = activeScenario === "historical";
+
+        if (!activeScenario) {
+            scenarioNote.textContent = "Waiting for the map to load.";
+            key.selectAll("*").remove();
+            chart.selectAll("*").remove();
+            chart.attr("hidden", "");
+            yearNote.textContent = "";
+            hoverNote.hidden = true;
+            return () => { };
+        }
+
+        chart.attr("hidden", null);
+        hoverNote.hidden = false;
+        scenarioNote.textContent = historicalMode
+            ? "Historical simulation, 1995–2014. Zero marks each region’s baseline mean."
+            : `Scenario: ${mapScenarioNames[activeScenario] ?? activeScenario}`;
+
+        const series = regions.map(region => ({
+                label: region.name,
+                color: region.color,
+                values: rows.filter(row =>
+                    row.region === region.name && row.scenario === activeScenario
+                )
+            }));
+
+        for (const line of series) {
+            line.values.sort((a, b) => a.year - b.year);
+            line.byYear = new Map(line.values.map(row => [row.year, row.warming]));
+        }
+
+        key.selectAll("*").remove();
+        key.attr("role", "group").attr("aria-label", "Highlight a region in the warming chart");
+        const items = key.selectAll(".key-item")
+            .data(series)
+            .join("button")
+            .attr("type", "button")
+            .attr("class", "key-item")
+            .style("--series-color", line => line.color)
+            .attr("title", line => `Highlight ${line.label}; click again to clear the highlight`)
+            .on("click", (event, line) => {
+                highlightedRegion = highlightedRegion === line.label ? null : line.label;
+                applyHighlight();
+            });
+
+        items.append("span")
+            .attr("class", "swatch")
+            .style("border-color", line => line.color)
+            .style("border-top-style", line => line.dash ? "dashed" : "solid");
+
+        items.append("span").text(line => line.label);
+
+        function applyHighlight() {
+            warmingTooltip.property("hidden", true);
+            items.attr("aria-pressed", line => String(line.label === highlightedRegion))
+                .classed("is-muted", line => highlightedRegion !== null && line.label !== highlightedRegion);
+            const lines = chart.selectAll(".warming-line")
+                .attr("opacity", line => line.label === highlightedRegion ? 1 : 0.2)
+                .attr("stroke-width", line => line.label === highlightedRegion ? 4 : 3);
+            drawMapRegions(regions.map(region => ({
+                ...region, focused: region.name === highlightedRegion,
+                muted: highlightedRegion !== null && region.name !== highlightedRegion
+            })));
+            syncSecondMapRegions();
+            if (highlightedRegion !== null) {
+                lines.filter(line => line.label === highlightedRegion).raise();
+            }
+        }
+
+        const width = Math.max(240, chartNode.clientWidth);
+        const height = 270;
+        const margin = { top: 20, right: 20, bottom: 42, left: 56 };
+        const bottom = height - margin.bottom;
+        const right = width - margin.right;
+        const visibleRows = series.flatMap(line => line.values);
+        if (!visibleRows.length) {
+            chart.selectAll("*").remove();
+            yearNote.textContent = "No annual regional data for this selection.";
+            return () => {};
+        }
+        const [firstYear, lastYear] = d3.extent(visibleRows, row => row.year);
+        const visibleYDomain = historicalMode
+            ? [
+                Math.min(0, d3.min(visibleRows, row => row.warming)),
+                Math.max(0, d3.max(visibleRows, row => row.warming))
+            ]
+            : yDomain;
+
+        const x = d3.scaleLinear([firstYear, lastYear], [margin.left, right]);
+        const y = d3.scaleLinear(visibleYDomain, [bottom, margin.top]).nice();
+
+        chart.attr("viewBox", `0 0 ${width} ${height}`);
+        chart.selectAll("*").remove();
+        const interval = chart.append("rect").attr("class", "regional-interval")
+            .attr("y", margin.top).attr("height", bottom - margin.top)
+            .attr("fill", "#e5f2ea").attr("pointer-events", "none");
+        const ends = chart.append("g").attr("class", "regional-interval-endpoints")
+            .attr("pointer-events", "none");
+
+        updateInterval = () => {
+            const range = regionalComparison;
+            const available = range?.scenario === activeScenario;
+            interval.attr("display", available ? null : "none");
+            const years = available ? [...new Set([range.startYear, range.endYear])] : [];
+            if (available) interval.attr("x", x(range.startYear))
+                .attr("width", x(range.endYear) - x(range.startYear));
+            ends.selectAll("line").data(years).join("line")
+                .attr("x1", x).attr("x2", x)
+                .attr("y1", margin.top).attr("y2", bottom)
+                .attr("stroke", "#8aa99a").attr("stroke-width", 1);
+        };
+        updateInterval();
+
+        chart.append("g")
+            .attr("transform", `translate(${margin.left},0)`)
+            .call(d3.axisLeft(y).ticks(5).tickSize(-(right - margin.left)))
+            .call(axis => axis.select(".domain").remove())
+            .call(axis => axis.selectAll(".tick line").attr("stroke", "#dbe5df"));
+
+        chart.append("g")
+            .attr("transform", `translate(0,${bottom})`)
+            .call(d3.axisBottom(x).ticks(width < 500 ? 4 : 8).tickFormat(d3.format("d")));
+
+        chart.append("text")
+            .attr("x", (margin.left + right) / 2)
+            .attr("y", height - 7)
+            .attr("text-anchor", "middle")
+            .attr("font-size", 12)
+            .text("Year");
+
+        chart.append("text")
+            .attr("transform", `translate(13,${(margin.top + bottom) / 2}) rotate(-90)`)
+            .attr("text-anchor", "middle")
+            .attr("font-size", 12)
+            .text("Temperature anomaly (°C)");
+
+        if (historicalMode) {
+            chart.append("line")
+                .attr("x1", margin.left)
+                .attr("x2", right)
+                .attr("y1", y(0))
+                .attr("y2", y(0))
+                .attr("stroke", "#768880")
+                .attr("stroke-dasharray", "3 3");
+        }
+
+        const path = d3.line().x(row => x(row.year)).y(row => y(row.warming));
+
+        chart.selectAll(".warming-line")
+            .data(series)
+            .join("path")
+            .attr("class", "warming-line")
+            .attr("fill", "none")
+            .attr("stroke", line => line.color)
+            .attr("stroke-width", 3)
+            .attr("stroke-opacity", 1)
+            .attr("stroke-linecap", "round")
+            .attr("stroke-linejoin", "round")
+            .attr("vector-effect", "non-scaling-stroke")
+            .attr("pointer-events", "none")
+            .attr("stroke-dasharray", line => line.dash ?? null)
+            .attr("d", line => path(line.values));
+
+        const marker = chart.append("line")
+            .attr("y1", margin.top)
+            .attr("y2", bottom)
+            .attr("stroke", "#18352e")
+            .attr("stroke-dasharray", "4 4");
 
         function showMapYear() {
             const year = getSelectedMapYear();
