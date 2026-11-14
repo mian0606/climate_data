@@ -111,7 +111,7 @@
             items.attr("aria-pressed", line => String(line.label === highlightedRegion))
                 .classed("is-muted", line => highlightedRegion !== null && line.label !== highlightedRegion);
             const lines = chart.selectAll(".warming-line")
-                .attr("opacity", line => line.label === highlightedRegion ? 1 : 0.2)
+                .attr("opacity", line => line.label === highlightedRegion ? 1 : 0.35)
                 .attr("stroke-width", line => line.label === highlightedRegion ? 4 : 3);
             drawMapRegions(regions.map(region => ({
                 ...region, focused: region.name === highlightedRegion,
