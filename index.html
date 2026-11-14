@@ -167,7 +167,7 @@
     }
 
     .key-item:hover { border-color: var(--series-color, #246953); background: #f2f6f3; }
-    .key-item.is-muted { opacity: .65; }
+    .key-item.is-muted { opacity: .45; }
     .key-item[aria-pressed="true"] {
       background: var(--series-color, #246953);
       border-color: var(--series-color, #246953);
@@ -389,6 +389,12 @@
       <h2 id="warming-heading">Regional warming</h2>
       <p class="note">Annual temperature change relative to 1995–2014 (°C)</p>
 
+      <div class="controls">
+        <div class="field">
+          <label for="warming-scenario">Scenario</label>
+          <select id="warming-scenario" disabled></select>
+        </div>
+      </div>
       <p id="warming-scenario-note" class="note" aria-live="polite"></p>
       <div id="warming-key" class="note"></div>
       <svg id="warming-chart" role="img" aria-label="Annual warming projections by year"></svg>
